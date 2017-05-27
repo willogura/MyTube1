@@ -15,9 +15,7 @@ var featuredCategory = Category(categoryFactory: CategoryFactory(factorySettings
 
 var suggestedSearch : Section?
 
-var upcomingEventsFeed = UpcomingEventsFeed()
 
-var upcomingEvents = [Event]()
 
 var search = VideoSearch()
 
@@ -34,7 +32,7 @@ class MainTableViewController: UITableViewController {
     
     @IBOutlet var tableView1: UITableView!
     
-    var vc: SlideShowViewController?
+  
     
     
     convenience init() {
@@ -71,41 +69,14 @@ class MainTableViewController: UITableViewController {
             
         }
         
-        self.setSlider()
+      
         
     }
     
     
+   
     
-    func setSlider() {
-        
-        let slider = parentCategory.getSlider()
-        
-        vc?.setSlider(slider: slider!)
-        
-    }
-    
-    
-    func loadSearch() {
-        
-        
-               //perform search list update in background in order to have instant access to search results, it has been pulled to decrease initial load activity and it did not seem to work correctly
-        
-        if(searchResults.count == 0) {
-          searchResults = search.getRecent()
-            
-        }
-        
-          /*
-            let myData = NSKeyedArchiver.archivedData(withRootObject: searchResults)
-            
-            let defaults = UserDefaults.standard
-            
-            defaults.set(myData, forKey: "SavedVideoSearchList")
- 
- */
-
-    }
+  
     
     
     func refresh(sender:AnyObject) {
@@ -117,7 +88,7 @@ class MainTableViewController: UITableViewController {
                 
                 self.embeddedViewController?.refreshTable()
                 
-                self.update()
+    
                 
             })
             
@@ -127,44 +98,13 @@ class MainTableViewController: UITableViewController {
         
     }
     
-    func update() {
-        
-        print("update called")
-        
-        var updatedSlider: Section?
-        
-        DispatchQueue.global(qos: .background).async {
-            
-            updatedSlider = updater.getSlideShowUpdate()
-            
-            if(updatedSlider != nil) {
-                
-                DispatchQueue.main.async {
-                    
-                    if(self.parentCategory.categoryTitle == featuredCategory.categoryTitle) {
-                        
-                        self.parentCategory.slider = updatedSlider
-                        
-                        featuredCategory.slider = updatedSlider
-                        
-                    }
-                    
-                    self.setSlider()
-                    
-                }
-                
-            }
-            
-        }
-        
-    }
+
     
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        slideShowView.frame.size.height = slideShowView.frame.width / 2.36
         
         self.refreshControl = UIRefreshControl()
         
@@ -172,25 +112,7 @@ class MainTableViewController: UITableViewController {
         
         self.refreshControl?.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
         
-        DispatchQueue.global(qos: .background).async {
-            
-              self.update()
-            
-            if(categoriesVideos.count == 0) {
-                
-                self.generateCategories()
-                
-            }
-            
-            
-          
-            
-            
-            self.loadSearch()
     
-            
-            
-        }
        NotificationCenter.default.addObserver(self, selector: #selector(self.loadVideos), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
        
         
@@ -202,20 +124,11 @@ class MainTableViewController: UITableViewController {
             
             
             
-            if(categoriesVideos.count == 0) {
-                
-                self.generateCategories()
-                
-            }
-            
+ 
             
          self.embeddedViewController?.preloadThumbnails()
             
-            self.update()
-            
-            
-            self.loadSearch()
-            
+      
             
             
         }
@@ -226,135 +139,7 @@ class MainTableViewController: UITableViewController {
     
     
     
-    func generateCategories() {
-        
-        
-        for video in categories {
-            
-            video.createListing()
-            
-            
-            
-            /*
-            if(video.sections.first!.searchID == 1 ) {
-               
-                vid = search.getYouTubeVideos(playlist: video.sections.first!.sectionPlaylist!)!
-                
-                if (vid.first?.fileName != nil) {
-                    
-                    if( vid.first?.hasThumbnailUrl())! {
-                        
-                        search.getThumbnail(url: (vid.first?.thumbnailUrl)!)
-                        
-                    } else {
-                        
-                        vid.first?.generateThumbnailUrl()
-                        
-                        search.getThumbnail(url: (vid.first?.thumbnailUrl)!)
-                        
-                    }
 
-                    categoriesVideos.append(vid.first!)
-                    
-                }
- 
- */
-                
-          
-                
-                //A very bad fix to have set thumbnails instead of generated from the first thumbnail of the category. Should have a bool added to the category factory setting to specify whether to use button thumbnail or load thumbnail from first video
-                
-                switch (video.categoryTitle)
-                    
-                {
-                    
-                case  "Meetings":
-                    
-                    let vid = Video(title: "Meetings", thumbnail: #imageLiteral(resourceName: "meetings-header"), fileName: 0, sourceUrl: nil, comments: "", eventDate: Date(), thumbnailUrl: nil, id: 1, isEvent: nil, endDate: nil)
-                    categoriesVideos.append(vid!)
-                    
-                case "Graduations":
-                    
-                    let vid = Video(title: "Graduations", thumbnail: #imageLiteral(resourceName: "graduations"), fileName: 0, sourceUrl: nil, comments: "", eventDate: Date(), thumbnailUrl: nil, id: 1, isEvent: nil, endDate: nil)
-                    categoriesVideos.append(vid!)
-                    
-                case "Sports":
-                    
-                    let vid = Video(title: "Sports", thumbnail: #imageLiteral(resourceName: "sports"), fileName: 0, sourceUrl: nil, comments: "", eventDate: Date(), thumbnailUrl: nil, id: 1, isEvent: nil, endDate: nil)
-                    categoriesVideos.append(vid!)
-                    
-                case "News":
-                    
-                    let vid = Video(title: "News", thumbnail: #imageLiteral(resourceName: "news"), fileName: 0, sourceUrl: nil, comments: "", eventDate: Date(), thumbnailUrl: nil, id: 1, isEvent: nil, endDate: nil)
-                    categoriesVideos.append(vid!)
-                    
-                case "Programs":
-                    
-                    let vid = Video(title: "Programs", thumbnail: #imageLiteral(resourceName: "programs-header"), fileName: 0, sourceUrl: nil, comments: "", eventDate: Date(), thumbnailUrl: nil, id: 1, isEvent: nil, endDate: nil)
-                    categoriesVideos.append(vid!)
-                    
-                case "Concerts":
-                    
-                    let vid = Video(title: "Concerts", thumbnail: #imageLiteral(resourceName: "concerts"), fileName: 0, sourceUrl: nil, comments: "", eventDate: Date(), thumbnailUrl: nil, id: 1, isEvent: nil, endDate: nil)
-                    categoriesVideos.append(vid!)
-                    
-                case "Teens":
-                    
-                    let vid = Video(title: "Teens", thumbnail: #imageLiteral(resourceName: "teens-header"), fileName: 0, sourceUrl: nil, comments: "", eventDate: Date(), thumbnailUrl: nil, id: 1, isEvent: nil, endDate: nil)
-                    categoriesVideos.append(vid!)
-                    
-                case "YouTube":
-                    
-                    let vid = Video(title: "YouTube", thumbnail: #imageLiteral(resourceName: "youtube-header"), fileName: 0, sourceUrl: nil, comments: "", eventDate: Date(), thumbnailUrl: nil, id: 1, isEvent: nil, endDate: nil)
-                    categoriesVideos.append(vid!)
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                default:
-                    
-                   let vid = search.searchForSingleCategory((video.sections.first!.searchID)!)
-                    
-                    if (vid.first?.fileName != nil) {
-                        
-                        
-                        
-                        search.getThumbnail(id: (vid.first?.fileName)!)
-                        
-                        categoriesVideos.append(vid.first!)
-                        
-                    } else {
-                        
-                        
-                        
-                        
-                        
-                        categoriesVideos.append(vid.first!)
-                    }
-                }
-                    
-                
-                
-
-            
-          
-                
-    
-               
-                    
-              
-            
-            
-            
-        }
-        
-        refreshControl?.endRefreshing()
- 
-    }
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -387,11 +172,7 @@ class MainTableViewController: UITableViewController {
         
         self.tableView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
         
-        if(vc != nil) {
-            
-            vc?.resetSlidePosition()
-            
-        }
+       
         
     }
     
@@ -426,11 +207,7 @@ class MainTableViewController: UITableViewController {
             
         }
         
-        if (segue.identifier == "slideShow") {
-            
-            vc = segue.destination as? SlideShowViewController
-            
-        }
+     
 
     }
 

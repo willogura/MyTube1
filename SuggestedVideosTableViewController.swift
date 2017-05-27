@@ -16,20 +16,12 @@ class SuggestedVideosTableViewController: UITableViewController {
     
     @IBOutlet weak var addVideoButton: UIButton!
     
-    @IBOutlet weak var cancelButton: UIButton!
-    
-    @IBOutlet weak var progressView: UIProgressView!
-    
+
     @IBOutlet var suggestedVideoTable: UITableView!
     
     @IBOutlet weak var descriptionLabel: UILabel!
     
-    var defaultSession : Foundation.URLSession? = nil
-    
-    var dataTask: URLSessionDataTask?
-    
-    var downloadsSession: Foundation.URLSession?
-    
+  
     var myVideos = [Video]()
     
     var section: Int?
@@ -83,27 +75,7 @@ class SuggestedVideosTableViewController: UITableViewController {
                 
             }
             
-        } else {
-            
-            let searchID = suggestedSearch?.searchID
-            
-            if (searchID != nil && searchID != 1 && searchID != 2) {
-                
-                var results = search.search(searchID!)
-                
-                results = search.trimVideos(videoArray: results, numberToReturn: 10)
-                
-                recommendedVideos = results
-                
-            } else {
-                
-            
-                
-                recommendedVideos = search.getRecentLimited()
-            }
-            
         }
-        
         myVideos = recommendedVideos
         
         self.video = video
@@ -174,26 +146,7 @@ class SuggestedVideosTableViewController: UITableViewController {
                     selectedSection = self.section!
                     
                     
-                    
-                    /*
-                    if(selectedVideo.fileName == 1) {
-                        
-                        let sections = Category(categoryFactory: CategoryFactory(factorySettings: teens()))
-                        
-                        sections.createListing()
-                        
-                        videoDetailViewController.setCategory(category: sections)
-                        
-                    }
-                    
-                    */
-                    
-                    videoDetailViewController.setDefaultSession(defaultSession: &self.parentView.defaultSession!)
-                    
-                    videoDetailViewController.setDataTask(dataTask: &self.parentView.dataTask!)
-                    
-                    videoDetailViewController.setDownloadsSession(downloadsSession: &self.parentView.downloadsSession!)
-                    
+              
                 
                     DispatchQueue.main.async( execute: {
                         
@@ -287,10 +240,6 @@ class SuggestedVideosTableViewController: UITableViewController {
         
     }
     
-    @IBAction func cancelPressed(_ sender: AnyObject) {
-        
-        parentView.cancelTapped(self.cancelButton)
-        
-    }
+   
     
 }

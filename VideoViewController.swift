@@ -106,19 +106,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             
         }
         
-        if(video?.getIsEvent() == true) {
-            
-            if (video?.eventDate?.checkIfDateTimeIsNow())! {
-                
-                showPlayer()
-                
-            } else {
-                
-                hidePlayer()
-                
-            }
-            
-        }
+   
         
     }
     
@@ -126,21 +114,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         
         DispatchQueue.global(qos: .background).async {
             
-            if(video.fileName != nil  && self.currentCategory?.videoType != VideoType.youtube) {
-                
-                if(video.fileName != 1) {
-                    
-                    video.thumbnail = search.getThumbnail(id: video.fileName!)
-                    
-                    if(video.thumbnail == nil) {
-                        
-                        video.generateThumbnail()
-                        
-                    }
-                    
-                }
-                
-            }
+       
             
             self.thumbnailView.image = video.thumbnail
             
@@ -173,25 +147,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
     
-    func loadEventThumbnail(video: Video) {
-        
-        DispatchQueue.global(qos: .background).async {
-            
-            video.thumbnail =  search.getThumbnail(url: (video.thumbnailUrl)!)
-            
-            video.thumbnail =  video.thumbnail?.cropEventImage()
-            
-            self.thumbnailView.image = video.thumbnail
-            
-            DispatchQueue.main.async(){
-                
-                LoadingOverlay.shared.hideOverlayView()
-                
-            }
-            
-        }
-        
-    }
+ 
     
     
     func loadVideoDescription(video: Video) {
@@ -215,39 +171,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
     
-    func loadEventDescription(video: Video) {
-        
-        let date =  video.getStartDate()
-        
-        let endDate = video.getEndDate()
-        
-        if (date?.checkIfDateTimeIsTomorrow())!  {
-            
-            self.childView.dateLabel.text = "Tomorrow"
-            
-        } else if (date?.checkIfDateTimeIsToday())! {
-            
-            self.childView.dateLabel.text = "Today"
-            
-        } else {
-            
-            self.childView.dateLabel.text = date?.convertDateToString()
-            
-        }
-        
-        self.navigationItem.title = video.title
-        
-        self.childView.titleLabel.text   = video.title
-        
-        self.childView.descriptionLabel.text = String("Start Time: \(date!.convertDateToTimeString())\nEnd Time: \(endDate!.convertDateToTimeString())")
-        
-        self.video = video
-        
-        self.childView.parentView = self
-        
-        self.childView.setVideo(video: video)
-        
-    }
+
     
     
     override func viewDidLoad() {
@@ -259,7 +183,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         
         super.viewDidLoad()
         
-        _ = self.downloadsSession
+     
         
         if(self.currentCategory != nil) {
             
@@ -293,15 +217,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         
         if let video = self.video {
             
-            if(video.getIsEvent() == true) {
-                
-                loadEventDescription(video: video)
-                
-                loadEventThumbnail(video: video)
-                
-                videoLoaded = false
-                
-            } else {
+          
                 
                 loadVideoDescription(video: video)
                 
@@ -309,7 +225,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
                 
                 showPlayer()
                 
-            }
+            
             
         }
         
@@ -330,66 +246,9 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         
     }
     
+ 
     
-    func setProgressBar() {
-        
-        let tempDownload = GlobalVariables.sharedManager.getDownload(downloadUrl: (self.video?.sourceUrl)!)
-        
-        
-        if( tempDownload?.progress !=  nil ) {
-            
-            childView.progressView.setProgress(tempDownload!.progress, animated: true)
-            
-            
-        } else {
-            
-            hideDownloadControls()
-            
-            timer?.invalidate()
-            
-            self.toggleAddButton()
-            
-        }
-        
-        
-    }
-    
-    func hideDownloadControls() {
-        
-        let showDownloadControls = false
-        
-        childView.cancelButton.isHidden = !showDownloadControls
-        
-        childView.progressView.isHidden = !showDownloadControls
-        
-        
-    }
-    
-    /*
-     func setActiveDownloads( downloads: inout [String: Download]) {
-     
-     //   self.activeDownloads = downloads
-     
-     }
-     */
-    
-    func setDefaultSession(defaultSession: inout Foundation.URLSession) {
-        
-        self.defaultSession = defaultSession
-        
-    }
-    
-    func setDataTask(dataTask: inout URLSessionDataTask) {
-        
-        self.dataTask = dataTask
-        
-    }
-    
-    func setDownloadsSession(downloadsSession: inout Foundation.URLSession) {
-        
-        self.downloadsSession = downloadsSession
-        
-    }
+
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -404,39 +263,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         
         toggleAddButton()
         
-        var showDownloadControls = false
-        
-        if ( video?.sourceUrl != nil && (GlobalVariables.sharedManager.activeDownloads[(video?.sourceUrl!)!] != nil))  {
-            
-            let download = GlobalVariables.sharedManager.activeDownloads[(video!.sourceUrl!)]
-            
-            showDownloadControls = true
-            
-            self.childView.progressView.progress = (download?.progress)!
-            
-            if(download?.isDownloading == true) {
-                
-                childView.addVideoButton.setTitle("Pause", for: UIControlState.selected)
-                
-                childView.addVideoButton.isSelected = true
-                
-                timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(VideoViewController.setProgressBar), userInfo: nil, repeats: true)
-                
-            } else if (download?.isDownloading == false)  {
-                
-                childView.addVideoButton.setTitle("Resume", for: UIControlState.selected)
-                
-                childView.addVideoButton.isSelected = true
-                
-                timer?.invalidate()
-            }
-            
-        }
-        
-        childView.progressView.isHidden = !showDownloadControls
-        
-        childView.cancelButton.isHidden = !showDownloadControls
-        
+    
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -485,24 +312,9 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             }
         }
         
+     
         
-        if(childView.addVideoButton.titleLabel?.text == "Save in Library"){
-            
-            downloadTapped()
-            
-        }
-        
-        if(childView.addVideoButton.titleLabel?.text == "Pause"){
-            
-            pauseDownload(video!)
-            
-        }
-        
-        if(childView.addVideoButton.titleLabel?.text == "Resume"){
-            
-            resumeDownload(video!)
-            
-        }
+    
         
     }
     
@@ -570,202 +382,18 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             
             webView?.loadHTMLString(embededHTML, baseURL: Bundle.main.resourceURL)
             
-        } else {
-            
-            
-            if(video?.fileName == 1 && currentCategory?.videoType != VideoType.youtube) {
-                
-                
-                if let urlString = video?.sourceUrl {
-                    
-                    let fileUrl = URL(string: urlString)
-                    
-                    let moviePlayer:AVPlayer! = AVPlayer(url: fileUrl!)
-                    
-                    playerViewController.player = moviePlayer
-                    
-                    self.addChildViewController(playerViewController)
-                  
-                    
-                    playerViewController.view.frame = self.thumbnailView.bounds
-                    
-                    playerViewController.allowsPictureInPicturePlayback = true
-                    
-                    playerViewController.showsPlaybackControls = true
-                    
-                    
-                    
-                    self.thumbnailView.addSubview(playerViewController.view)
-                    
-                    //let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    
-                    self.thumbnailButton.isHidden = true
-                    
-                    playerViewController.player!.play()
-                    
-                    //  appDelegate.shouldRotate = true // or false to disable rotation
-                    
-                }
-                
-                
-            } else {
-                
-                //   let videoPath = Bundle.main.path(forResource: video?.sourceUrl, ofType:"mp4")
-                
-                //Make a URL from your path
-                
-                //Initalize the movie player
-                
-                if (!localFileExistsForVideo(video!)) {
-                    
-                    if let urlString = video?.sourceUrl {
-                        
-                        let fileUrl = URL(string: urlString)
-                        
-                        let moviePlayer:AVPlayer! = AVPlayer(url: fileUrl!)
-                        
-                        playerViewController.player = moviePlayer
-                        
-                        self.addChildViewController(playerViewController)
-                        
-                      
-                        
-                        playerViewController.view.frame = self.thumbnailView.bounds
-                        
-                        playerViewController.allowsPictureInPicturePlayback = true
-                        
-                        playerViewController.showsPlaybackControls = true
-                        
-                          self.thumbnailView.addSubview(playerViewController.view)
-                        //   let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        
-                        //  let value = UIInterfaceOrientation.portrait.rawValue
-                        // UIDevice.current.setValue(value, forKey: "orientation")
-                        
-                        self.thumbnailButton.isHidden = true
-                        
-                        playerViewController.player!.play()
-                        
-                        //  appDelegate.shouldRotate = true // or false to disable rotation
-                        
-                        
-                        
-                    }
-                    
-                } else {
-                    
-                    if let urlString = video?.sourceUrl, let url = localFilePathForUrl(urlString) {
-                        
-                        let moviePlayer:AVPlayer! = AVPlayer(url: url)
-                        
-                        playerViewController.player = moviePlayer
-                        
-                        self.addChildViewController(playerViewController)
-                        
-                       
-                        
-                        playerViewController.view.frame = self.thumbnailView.bounds
-                        
-                        playerViewController.allowsPictureInPicturePlayback = true
-                        
-                        playerViewController.showsPlaybackControls = true
-                        
-                         self.thumbnailView.addSubview(playerViewController.view)
-                        
-                        //let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                        
-                        //  let value = UIInterfaceOrientation.portrait.rawValue
-                        // UIDevice.current.setValue(value, forKey: "orientation")
-                        
-                        self.thumbnailButton.isHidden = true
-                        
-                        playerViewController.player!.play()
-                        
-                    }
-                    
-                }
-                
-            }
-            
         }
-        
     }
     
+
+ 
     
-    func playDownload(_ video: Video) {
-        
-        if let urlString = video.sourceUrl, let url = localFilePathForUrl(urlString) {
-            
-            let moviePlayer:AVPlayer! = AVPlayer(url: url)
-            
-            let playerViewController = AVPlayerViewController()
-            
-            playerViewController.player = moviePlayer
-            
-            self.present(playerViewController, animated: true) {
-                
-                playerViewController.player!.play()
-                
-            }
-            
-        }
-        
-    }
-    
-    // MARK: Download helper methods
-    
-    // This method generates a permanent local file path to save a video to by appending
-    // the lastPathComponent of the URL (i.e. the file name and extension of the file)
-    // to the path of the app’s Documents directory.
-    
-    func localFilePathForUrl(_ previewUrl: String) -> URL? {
-        
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
-        
-        let url = URL(string: previewUrl)
-        
-        if(url != nil ) {       //added this to fix error
-            
-            let lastPathComponent = url?.lastPathComponent
-            
-            let fullPath = documentsPath.appendingPathComponent(lastPathComponent!)
-            
-            return URL(fileURLWithPath:fullPath)
-        }
-        
-        return nil
-        
-    }
-    
-    // This method checks if the local file exists at the path generated by localFilePathForUrl(_:)
-    
-    func localFileExistsForVideo(_ video: Video) -> Bool {
-        
-        if let urlString = video.sourceUrl, let localUrl = localFilePathForUrl(urlString) {
-            
-            var isDir : ObjCBool = false
-            
-            let path = localUrl.path
-            
-            return FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
-            
-        }
-        
-        return false
-        
-    }
     
     func toggleAddButton() {
         
         if(video != nil) {
             
-            if(localFileExistsForVideo(video!)) {
-                
-                childView.addVideoButton.setTitle("Saved in Library", for: UIControlState.selected)
-                
-                childView.addVideoButton.isSelected = true
-                
-            } else {
+          
                 
                 if(hasSavedVideo()) {
                     
@@ -788,144 +416,14 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
                     childView.addVideoButton.isSelected = false
                 }
                 
-            }
+            
             
         }
     }
     
-    func downloadTapped() {
-        
-        var showDownloadControls = false
-        
-        startDownload(video!)
-        
-        childView.addVideoButton.setTitle("Pause", for: UIControlState.selected)
-        
-        if let download = GlobalVariables.sharedManager.activeDownloads[video!.sourceUrl!] {
-            
-            showDownloadControls = true
-            
-            childView.progressView.progress = (download.progress)
-            
-            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(VideoViewController.setProgressBar), userInfo: nil, repeats: true)
-            
-        }
-        
-        childView.progressView.isHidden = !showDownloadControls
-        
-        childView.cancelButton.isHidden = !showDownloadControls
-        
-    }
-    func cancelTapped(_ sender: AnyObject) {
-        
-        cancelDownload(video!)
-        
-    }
-    
-    @IBAction func pauseTapped(_ sender: AnyObject) {
-        
-        pauseDownload(video!)
-        
-    }
     
     
-    func startDownload(_ video: Video) {
-        
-        if let urlString = video.sourceUrl, let url =  URL(string: urlString) {
-            
-            let download = Download(url: urlString)
-            
-            download.downloadTask = downloadsSession?.downloadTask(with: url)
-            
-            download.downloadTask!.resume()
-            
-            download.isDownloading = true
-            
-            GlobalVariables.sharedManager.activeDownloads[download.url] = download
-            
-        }
-    }
-    
-    func pauseDownload(_ video: Video) {
-        
-        if let urlString = video.sourceUrl,
-            
-            let download = GlobalVariables.sharedManager.activeDownloads[urlString] {
-            
-            if(download.isDownloading) {
-                
-                download.downloadTask?.cancel { data in
-                    
-                    if data != nil {
-                        
-                        download.resumeData = correctResumeData(data)
-                        
-                    }
-                }
-                
-                download.isDownloading = false
-                
-                timer?.invalidate()
-                
-                childView.addVideoButton.setTitle("Resume", for: UIControlState.selected)
-                
-            }
-            
-        }
-        
-    }
-    
-    func cancelDownload(_ video: Video) {
-        
-        if let urlString = video.sourceUrl,
-            
-            let download = GlobalVariables.sharedManager.activeDownloads[urlString] {
-            
-            download.downloadTask?.cancel()
-            
-            GlobalVariables.sharedManager.activeDownloads[urlString] = nil
-            
-            timer?.invalidate()
-            
-            toggleAddButton()
-            
-            hideDownloadControls()
-            
-        }
-        
-    }
-    
-    func resumeDownload(_ video: Video) {
-        
-        childView.addVideoButton.setTitle("Pause", for: UIControlState.selected)
-        
-        if let urlString = video.sourceUrl,
-            
-            let download = GlobalVariables.sharedManager.activeDownloads[urlString] {
-            
-            if let resumeData = download.resumeData {
-                
-                download.downloadTask = downloadsSession?.correctedDownloadTask(withResumeData: resumeData)
-                
-                download.downloadTask!.resume()
-                
-                download.isDownloading = true
-                
-                timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(VideoViewController.setProgressBar), userInfo: nil, repeats: true)
-                
-            } else if let url = URL(string: download.url) {
-                
-                download.downloadTask = downloadsSession?.downloadTask(with: url)
-                
-                download.downloadTask!.resume()
-                
-                download.isDownloading = true
-                
-            }
-            
-        }
-        
-    }
+  
     
 }
 
