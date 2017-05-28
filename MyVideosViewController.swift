@@ -1,10 +1,4 @@
-//
-//  MyVideosViewController.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 7/15/16.
-//  Copyright © 2016 Ken Toh. All rights reserved.
-//
+
 
 import Foundation
 
@@ -16,10 +10,6 @@ import MediaPlayer
 import AVKit
 
 
-
-
-
-/// The MyVideosViewController class contains the controller that handles the My Videos table view within the Search View
 
 
 
@@ -113,14 +103,7 @@ class MyVideosViewController: UITableViewController{
     
     func playVideo(_ video: Video) {
         
-        //Get the Video Path
-        print("playing video\(video.title)")
-        let videoPath = Bundle.main.path(forResource: video.sourceUrl, ofType:"mp4")
-        print("path\(videoPath)")
-        //Make a URL from your path
-        print("source url \(video.sourceUrl)")
-        //Initalize the movie player
-        
+     
        
             
             if let urlString = video.sourceUrl {
@@ -128,9 +111,7 @@ class MyVideosViewController: UITableViewController{
                 
                 let fileUrl = URL(string: urlString)
                 
-                
-             
-                
+          
            
                 let asset = AVAsset(url: fileUrl!)
                 
@@ -146,11 +127,7 @@ class MyVideosViewController: UITableViewController{
                 
                 present(fullScreenPlayerViewController, animated: true, completion: nil)
                 
-               // let moviePlayer:MPMoviePlayerViewController! = MPMoviePlayerViewController(contentURL: fileUrl)
-                
-                
-                
-              //  presentMoviePlayerViewControllerAnimated(moviePlayer)
+     
                 
             }
             
@@ -250,12 +227,7 @@ class MyVideosViewController: UITableViewController{
                     
                     videoDetailViewController.video = selectedVideo
                     
-       
-                    
-                    
-                
-                        
-                        
+      
                         let sections = Category(categoryFactory: CategoryFactory(factorySettings: home()))
                         
                         
@@ -263,13 +235,7 @@ class MyVideosViewController: UITableViewController{
                         
                         
                         videoDetailViewController.setCategory(category: sections)
-                        
-                        
-                        
-                    
-                    
-                    
-                    
+     
                     
            
                     
@@ -322,16 +288,7 @@ class MyVideosViewController: UITableViewController{
         
         if editingStyle == .delete {
             
-            // Changed from videos.remove to filtered. This stops the crash but the videos reappear when a new search is started
-            
-            
-            
-            
-            
-            let video = myVideos[indexPath.row]
-            
-            
-            deleteVideo(video)
+     
             
             myVideos.remove(at: indexPath.row)
             
@@ -344,20 +301,18 @@ class MyVideosViewController: UITableViewController{
             
             
             
-            // Delete the row from the data source
+       
             
             saveVideos()
             
-            
-            // tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+         
             
         } else if editingStyle == .insert {
             
             
             print("insert runs")
             
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-            
+      
         }
         
     }
@@ -439,14 +394,7 @@ class MyVideosViewController: UITableViewController{
  
  
 
-    func deleteVideo(_ video: Video)  {
-        
-
-        
-        
-        
-    }
-    
+  
     
 
 }

@@ -1,10 +1,4 @@
-//
-//  MainTableViewController.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 10/25/16.
-//
-//
+
 
 import UIKit
 
@@ -26,7 +20,7 @@ class MainTableViewController: UITableViewController {
     
     var parentCategory = featuredCategory
     
-    @IBOutlet weak var slideShowView: UIView!
+
     
     @IBOutlet weak var mainTableView: UIView!
     
@@ -49,29 +43,7 @@ class MainTableViewController: UITableViewController {
     
     
     
-    
-    func setCategory(newCategory: Category) {
-        
-        
-        if(newCategory.categoryTitle == featuredCategory.categoryTitle) {
-            
-            
-            self.parentCategory = featuredCategory
-            
-            category = self.parentCategory
-            
-            
-        } else {
-            
-            self.parentCategory = newCategory
-            
-            category = self.parentCategory
-            
-        }
-        
-      
-        
-    }
+
     
     
    

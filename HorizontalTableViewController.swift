@@ -1,15 +1,6 @@
 
 
 
-
-//
-//  HorizontalTableViewController.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 10/21/16.
-//
-//
-
 import UIKit
 
 
@@ -52,12 +43,11 @@ class HorizontalTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         
-        if(category.categoryTitle == featuredCategory.categoryTitle && currentCategory?.categoryTitle == featuredCategory.categoryTitle) {
-            
+     
             
             saveFeaturedVideos()
             
-        }
+        
         
         self.updateTable()
         
@@ -85,7 +75,7 @@ class HorizontalTableViewController: UITableViewController {
                 
                 if(category.sections[count].sectionType == SectionType.videoList   ) {
                     
-                    if(category.videoType == VideoType.youtube) {
+                 
                         
                         videos =  self.search.getYouTubeVideos(playlist: category.sections[count].sectionPlaylist!)!
                         
@@ -97,28 +87,24 @@ class HorizontalTableViewController: UITableViewController {
                         while (videos.count > index && index < 20) {
                             
                             
-                            
-                            if (videos[index].fileName != nil) {
+                           
                                 
                                 if( videos[index].hasThumbnailUrl()) {
                                     
                                     self.search.getThumbnail(url: (videos[index].thumbnailUrl)!)
                                     
                                     
-                                } else {
-                                    
-                                    videos[index].generateThumbnailUrl()
-                                    
-                                    self.search.getThumbnail(url: (videos[index].thumbnailUrl)!)
-                                    
                                 }
+                                    
+                                 
+                             
                                 
                                 
                                 
                          
                                 
                                 
-                            }
+                            
                             
                             index = index + 1
                         }
@@ -128,7 +114,7 @@ class HorizontalTableViewController: UITableViewController {
                         
                         
                         
-                    }
+                    
                 }
                 
                 
@@ -194,8 +180,6 @@ class HorizontalTableViewController: UITableViewController {
                             if(category.sections[index].searchID != nil) {
                                 
                              
-                                    
-                                     if(category.videoType == VideoType.youtube) {
                                         
                                         if(category.sections[index].getDisplayCount() == nil) {
                                             
@@ -216,8 +200,7 @@ class HorizontalTableViewController: UITableViewController {
                                             
                                         }
                                         
-                                    }
-                                    
+                                        
                                 
                                 
                             } else {
@@ -241,12 +224,10 @@ class HorizontalTableViewController: UITableViewController {
                     }
                     
                     self.changeTableSize()
-                    
-                    if(category.categoryTitle == featuredCategory.categoryTitle && self.currentCategory?.categoryTitle == featuredCategory.categoryTitle) {
-                        
+               
                         self.saveFeaturedVideos()
                         
-                    }
+                    
                     
                     
                     
@@ -279,8 +260,7 @@ class HorizontalTableViewController: UITableViewController {
             while (index < category.sections.count) {
                 
                 if(category.sections[index].searchID != nil) {
-                    
-                  if(category.videoType == VideoType.youtube) {
+                  
                         
                         if(category.sections[index].getDisplayCount() == nil) {
                             
@@ -296,7 +276,7 @@ class HorizontalTableViewController: UITableViewController {
                             
                         }
                         
-                    }
+                    
                     
                     
                 } else {
@@ -323,11 +303,10 @@ class HorizontalTableViewController: UITableViewController {
         
         self.changeTableSize()
         
-        if(category.categoryTitle == featuredCategory.categoryTitle && self.currentCategory?.categoryTitle == featuredCategory.categoryTitle) {
-            
+    
             self.saveFeaturedVideos()
             
-        }
+     
         
         
         
@@ -357,18 +336,12 @@ class HorizontalTableViewController: UITableViewController {
         
         for section in (currentCategory?.sections)! {
             
-            switch section.sectionType {
-                
-            case .videoList:
+           
                 
                 tableSize = tableSize + CGFloat(165)
                 
                 
-            default:
-                
-                tableSize = tableSize + CGFloat(120)
-                
-            }
+         
             
         }
         
@@ -408,12 +381,6 @@ class HorizontalTableViewController: UITableViewController {
         let section = category.getSection(row: indexPath.section)
 
         
-  
-        
-        
-        if (section.sectionType == SectionType.videoList) {
-            
-            
             self.tableView.rowHeight = 165.0
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "VideoCell", for: indexPath) as? HorizontalTableViewCell
@@ -426,27 +393,7 @@ class HorizontalTableViewController: UITableViewController {
                 
             }
             
-            return cell!
-            
-        }
-        
-        
   
-        
-     
-        
-        
-    
-        
-      
-        
-        
-        self.tableView.rowHeight = 120.0
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "VideoCell", for: indexPath) as? HorizontalTableViewCell
-        
-        cell!.sectionLabel.text = section.sectionTitle
-        
         return cell!
         
     }
@@ -466,10 +413,7 @@ class HorizontalTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        /* //old version
-         guard var cell = cell as? HorizontalTableViewCell else { return }
-         */
+  
         
         guard cell is HorizontalTableViewCell else { return }
         
@@ -561,38 +505,25 @@ extension HorizontalTableViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-                
-  
-        
+ 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoCollectionCell", for: indexPath)
         
         var cells : HorizontalCollectionViewCell
         
         cells = cell as! HorizontalCollectionViewCell
-        
-  
-        
-        
+
         if(category.sections[safe: collectionView.tag]?.sectionType == SectionType.videoList   ) {
             
             
             
             var videos = [Video]()
             
-            if(category.videoType == VideoType.youtube) {
-                
-                
+       
                 
                 
                 videos =  search.getYouTubeVideos(playlist: category.sections[collectionView.tag].sectionPlaylist!)!
                 
-                
-                
-                
-                
-                
-            }
-            
+
             if (videos[safe: indexPath.item]?.fileName != nil) {
                 
               
@@ -608,7 +539,7 @@ extension HorizontalTableViewController: UICollectionViewDelegate, UICollectionV
                     
                
                     
-                    videos[indexPath.item].generateThumbnailUrl()
+                  //  videos[indexPath.item].generateThumbnailUrl()
                     
                     cells.thumbnail.image = self.search.getThumbnail(url: (videos[indexPath.item].thumbnailUrl)!)
                     
@@ -625,6 +556,7 @@ extension HorizontalTableViewController: UICollectionViewDelegate, UICollectionV
             } else  {
                
                 if( videos[safe: indexPath.item] != nil) {
+                    
                 cells.thumbnail.image = #imageLiteral(resourceName: "placeholder-header")
                 
                 cells.thumbnail.setRadius(radius: imageRadius)
@@ -637,7 +569,7 @@ extension HorizontalTableViewController: UICollectionViewDelegate, UICollectionV
                     
                     cells.titleLabel.text = nil
                     
-                    cells.dateLabel.text = nil
+                   
                     
                 }
             }
@@ -649,10 +581,7 @@ extension HorizontalTableViewController: UICollectionViewDelegate, UICollectionV
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-      
-        
-        
+
     }
     
 }

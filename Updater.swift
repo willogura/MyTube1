@@ -1,10 +1,4 @@
-//
-//  Updater.swift
-//  CTV App
-//
-//  Created by William Ogura on 1/25/17.
-//  
-//
+
 
 import Foundation
 

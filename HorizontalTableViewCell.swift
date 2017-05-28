@@ -1,10 +1,4 @@
-//
-//  HorizontalTableViewCell.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 10/21/16.
-//
-//
+
 
 import UIKit
 

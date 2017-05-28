@@ -1,33 +1,9 @@
-//
-//  LoadingOverlay.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 1/5/17.
-//
-//
+
 
 import Foundation
 import UIKit
 
 
-/*  Usage
-
-LoadingOverlay.shared.showOverlay(view: self.navigationController?.view)
-
-
-DispatchQueue.global(qos: .userInitiated).async {
- 
- 
- 
- //Do the main task here
- 
- 
-    DispatchQueue.main.async( execute: {
-        
-        LoadingOverlay.shared.hideOverlayView()
-    })
-    
- */
 
 public class LoadingOverlay{
     

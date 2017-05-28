@@ -1,10 +1,4 @@
-//
-//  VideoCell.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 7/15/16.
-//
-//
+
 
 import Foundation
 

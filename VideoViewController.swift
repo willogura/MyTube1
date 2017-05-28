@@ -1,10 +1,3 @@
-//
-//  VideoViewController.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 7/15/16.
-//
-//
 
 import Foundation
 
@@ -47,13 +40,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     var webView: UIWebView?
     
-    var defaultSession : Foundation.URLSession? = nil
-    
-    var dataTask: URLSessionDataTask?
-    
-    var downloadsSession: Foundation.URLSession?
-    
-    var timer : Timer?
+  
     
     @IBOutlet weak var dateLabel: UILabel!
     
@@ -152,10 +139,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     func loadVideoDescription(video: Video) {
         
-        let date =  video.eventDate
-        
-        self.childView.dateLabel.text = date?.convertDateToString()
-        
+      
         self.navigationItem.title = video.title
         
         self.childView.titleLabel.text   = video.title
@@ -268,7 +252,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     override func viewDidDisappear(_ animated: Bool) {
         
-        timer?.invalidate()
+        
         
     }
     
@@ -306,7 +290,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     func addVideo(_ sender: AnyObject) {
         
-        if(childView.addVideoButton.titleLabel?.text == "+ Bookmark"){
+        if(childView.addVideoButton.titleLabel?.text == "+ Love It"){
             if(!childView.addVideoButton.isSelected) {
                 saveVideos()
             }
@@ -358,7 +342,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         
         self.videoLoaded = true
         
-        if(currentCategory?.videoType == VideoType.youtube) {
+
             
             webView = UIWebView(frame: self.thumbnailView.frame)
             
@@ -382,7 +366,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             
             webView?.loadHTMLString(embededHTML, baseURL: Bundle.main.resourceURL)
             
-        }
+        
     }
     
 
@@ -397,13 +381,13 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
                 
                 if(hasSavedVideo()) {
                     
-                    if(currentCategory?.videoType != VideoType.youtube &&  video?.getIsEvent() == false ) {
+                    if(currentCategory?.videoType != VideoType.youtube  ) {
                         
                         childView.addVideoButton.setTitle("Save in Library", for: UIControlState.selected)
                         
                     } else {
                         
-                        childView.addVideoButton.setTitle("Bookmarked", for: UIControlState.selected)
+                        childView.addVideoButton.setTitle("Loved It", for: UIControlState.selected)
                         
                     }
                     
@@ -411,7 +395,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
                     
                 } else {
                     
-                    childView.addVideoButton.setTitle("+ Bookmark", for: UIControlState.normal)
+                    childView.addVideoButton.setTitle("+ Love It", for: UIControlState.normal)
                     
                     childView.addVideoButton.isSelected = false
                 }

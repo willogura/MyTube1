@@ -1,10 +1,4 @@
-//
-//  VideoCell.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 7/15/16.
-//  
-//
+
 
 import Foundation
 
@@ -26,8 +20,7 @@ class MainVideoCell: UITableViewCell {
     @IBOutlet weak var thumbnailButton: UIButton!
     
     @IBOutlet weak var titleLabel: UILabel!
-    
-    @IBOutlet weak var dateLabel: UILabel!
+
     
     
     override func awakeFromNib() {

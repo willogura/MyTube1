@@ -1,10 +1,4 @@
-//
-//  SuggestedVideosTableViewController.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 10/20/16.
-//
-//
+
 
 import UIKit
 
@@ -12,7 +6,7 @@ class SuggestedVideosTableViewController: UITableViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
     
-    @IBOutlet weak var dateLabel: UILabel!
+   
     
     @IBOutlet weak var addVideoButton: UIButton!
     
@@ -56,7 +50,7 @@ class SuggestedVideosTableViewController: UITableViewController {
     
     func setVideo(video: Video) {
         
-        if( currentCategory?.videoType == VideoType.youtube) {
+       
             
             if(self.section == nil) {
                 
@@ -75,7 +69,7 @@ class SuggestedVideosTableViewController: UITableViewController {
                 
             }
             
-        }
+        
         myVideos = recommendedVideos
         
         self.video = video
@@ -173,7 +167,7 @@ class SuggestedVideosTableViewController: UITableViewController {
         
         cell?.titleLabel?.text = recommendedVideos[indexPath.row].title
         
-        cell?.dateLabel?.text = recommendedVideos[indexPath.row].eventDate!.convertDateToString()
+    
         
         if(recommendedVideos[indexPath.row].thumbnail != nil) {
             
@@ -194,7 +188,6 @@ class SuggestedVideosTableViewController: UITableViewController {
                     
                 } else {
                     
-                    self.recommendedVideos[indexPath.row].generateThumbnailUrl()
                     
                     if( self.recommendedVideos[indexPath.row].thumbnailUrl != nil) {
                         

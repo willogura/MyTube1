@@ -1,10 +1,4 @@
-//
-//  ImageHandler.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 11/29/16.
-//
-//
+
 
 import Foundation
 
@@ -12,9 +6,7 @@ import Foundation
 import UIKit
 
 
-var imageRadius: CGFloat = 2.0
-
-var buttonRadius: CGFloat = 2.0
+var imageRadius: CGFloat = 4.0
 
 
 let imageCache = NSCache<AnyObject, AnyObject>()

@@ -1,10 +1,4 @@
-//
-//  Category.swift
-//  HalfTunes
-//
-//  Created by William Ogura on 11/17/16.
-//
-//
+
 
 import Foundation
 
@@ -23,8 +17,7 @@ var categories: [Category] = [Category(categoryFactory: CategoryFactory(factoryS
 
 
 enum VideoType {
-    
-    case cablecast
+
     
     case youtube
     
@@ -42,44 +35,9 @@ class CategoryFactorySettings: NSObject {
     
     var categoryTitle: String?
     
-    var videoType = VideoType.cablecast
+    var videoType = VideoType.youtube
     
     
-    
-    var upcomingSectionTitle: String?
-    
-    var upcomingSectionSearchID: Int?
-    
-    var upcomingSectionDisplayCount: Int?
-    
-    var upcomingSectionPlaylist: String?
-    
-    
-    var popularSectionTitle: String?
-    
-    var popularSectionSearchID: Int?
-    
-    var popularSectionDisplayCount: Int?
-    
-    var popularSectionPlaylist: String?
-    
-    
-    var recentGirlsSectionTitle: String?
-    
-    var recentGirlsSectionSearchID: Int?
-    
-    var recentGirlsSectionDisplayCount: Int?
-    
-    var recentGirlsSectionPlaylist: String?
-    
-    
-    var recentBoysSectionTitle: String?
-    
-    var recentBoysSectionSearchID: Int?
-    
-    var recentBoysSectionDisplayCount: Int?
-    
-    var recentBoysSectionPlaylist: String?
     
     
     
@@ -92,24 +50,7 @@ class CategoryFactorySettings: NSObject {
     var featuredSectionPlaylist: String?
     
     
-    
-    var recent2SectionTitle: String?
-    
-    var recent2SectionSearchID: Int?
-    
-    var recent2SectionDisplayCount: Int?
-    
-    var recent2SectionPlaylist: String?
-    
-    
-    
-    var recentSectionTitle: String?
-    
-    var recentSectionSearchID: Int?
-    
-    var recentSectionDisplayCount: Int?
-    
-    var recentSectionPlaylist: String?
+
     
     
     var featured2SectionTitle: String?
@@ -144,24 +85,14 @@ class CategoryFactorySettings: NSObject {
 
 enum CategoryOrder {
     
-    case upcoming
-    
-    case recent
-    
-    case recent2
-    
+
     case featured
     
     case featured2
     
     case featured3
     
-    case popular
-    
-    case girls
-    
-    case boys
-    
+ 
 
     
 }
@@ -187,100 +118,7 @@ class CategoryFactory {
         
     }
     
-    
-    internal func addUpcomingSection() -> Section {
-        
-        let sectionType = SectionType.upcomingEventList
-        
-        let sectionTitle = settings.upcomingSectionTitle
-        
-        let searchID = settings.upcomingSectionSearchID
-        
-        let displayCount = settings.upcomingSectionDisplayCount
-        
-        let videoList: [Int]? = nil
-        
-     
-        
-        let sectionPlaylist = settings.upcomingSectionPlaylist
-        
-        let images: [UIImage]? = nil
-        
-        let section = Section(sectionType: sectionType, sectionTitle: sectionTitle, searchID: searchID, videoList: videoList,  displayCount: displayCount,  sectionPlaylist: sectionPlaylist)
-        
-        return section
-    }
-    
-    internal func addPopularSection() -> Section {
-        
-        let sectionType = SectionType.videoList
-        
-        let sectionTitle = settings.popularSectionTitle
-        
-        let searchID = settings.popularSectionSearchID
-        
-        let displayCount = settings.popularSectionDisplayCount
-        
-        let videoList: [Int]? = nil
-        
-      
-        
-        let sectionPlaylist = settings.popularSectionPlaylist
-        
-        let images: [UIImage]? = nil
-        
-        let section = Section(sectionType: sectionType, sectionTitle: sectionTitle, searchID: searchID, videoList: videoList,  displayCount: displayCount,  sectionPlaylist: sectionPlaylist)
-        
-        return section
-    }
-    
-    internal func addRecentGirlsSection() -> Section {
-        
-        let sectionType = SectionType.videoList
-        
-        let sectionTitle = settings.recentGirlsSectionTitle
-        
-        let searchID = settings.recentGirlsSectionSearchID
-        
-        let displayCount = settings.recentGirlsSectionDisplayCount
-        
-        let videoList: [Int]? = nil
-        
-     
-        
-        let sectionPlaylist = settings.recentGirlsSectionPlaylist
-        
-        let images: [UIImage]? = nil
-        
-        let section = Section(sectionType: sectionType, sectionTitle: sectionTitle, searchID: searchID, videoList: videoList,  displayCount: displayCount, sectionPlaylist: sectionPlaylist)
-        return section
-        
-        
-    }
-    
-    internal func addRecentBoysSection() -> Section {
-        
-        let sectionType = SectionType.videoList
-        
-        let sectionTitle = settings.recentBoysSectionTitle
-        
-        let searchID = settings.recentBoysSectionSearchID
-        
-        let displayCount = settings.recentBoysSectionDisplayCount
-        
-        let videoList: [Int]? = nil
-        
-       
-        
-        let sectionPlaylist = settings.recentBoysSectionPlaylist
-        
-        let images: [UIImage]? = nil
-        
-        let section = Section(sectionType: sectionType, sectionTitle: sectionTitle, searchID: searchID, videoList: videoList,  displayCount: displayCount,  sectionPlaylist: sectionPlaylist)
-        
-        return section
-        
-    }
+
     
     internal func addFeaturedSection() -> Section {
         
@@ -353,56 +191,8 @@ class CategoryFactory {
         
     }
     
-    internal func addRecentSection() -> Section {
-        
-        let sectionType = SectionType.videoList
-        
-        let sectionTitle = settings.recentSectionTitle
-        
-        let searchID = settings.recentSectionSearchID
-        
-        let displayCount = settings.recentSectionDisplayCount
-        
-        let sectionPlaylist = settings.recentSectionPlaylist
-        
-        let videoList: [Int]? = nil
-        
-    
-        
-        let images: [UIImage]? = nil
-        
-        let section = Section(sectionType: sectionType, sectionTitle: sectionTitle, searchID: searchID, videoList: videoList,  displayCount: displayCount,  sectionPlaylist: sectionPlaylist)
-        
-        return section
-        
-    }
-    
-    
-    internal func addRecent2Section() -> Section {
-        
-        let sectionType = SectionType.videoList
-        
-        let sectionTitle = settings.recent2SectionTitle
-        
-        let searchID = settings.recent2SectionSearchID
-        
-        let displayCount = settings.recent2SectionDisplayCount
-        
-        let sectionPlaylist = settings.recent2SectionPlaylist
-        
-        let videoList: [Int]? = nil
-        
-   
-        
-        let images: [UIImage]? = nil
-        
-        let section = Section(sectionType: sectionType, sectionTitle: sectionTitle, searchID: searchID, videoList: videoList,  displayCount: displayCount,  sectionPlaylist: sectionPlaylist)
-        
-        return section
-        
-    }
-    
 
+    
     
     
     
@@ -468,21 +258,7 @@ class Category {
             
             switch section {
                 
-            case CategoryOrder.upcoming:
-                
-                createUpcomingSection()
-                
-            case CategoryOrder.recent:
-                
-                createRecentSection()
-                
-            case CategoryOrder.recent2:
-                
-                createRecent2Section()
-                
-            case CategoryOrder.popular:
-                
-                createPopularSection()
+
                 
             case CategoryOrder.featured:
                 
@@ -498,15 +274,7 @@ class Category {
                 
      
                 
-            case CategoryOrder.boys:
-                
-                createRecentBoysSection()
-                
-            case CategoryOrder.girls:
-                
-                createRecentGirlsSection()
-
-            
+       
        
             
             
@@ -517,14 +285,6 @@ class Category {
         
     }
     
-    func createUpcomingSection() {
-        
-        sections.append(categoryFactory.addUpcomingSection())
-        
-        
-        
-    }
-
 
     
     func createFeaturedSection() {
@@ -552,46 +312,7 @@ class Category {
     }
     
   
-    func createRecentSection() {
-        
-        sections.append(categoryFactory.addRecentSection())
-        
-    }
-    
-    func createRecent2Section() {
-        
-        sections.append(categoryFactory.addRecent2Section())
-        
-    }
-    
-    func createRecentBoysSection() {
-        
-        sections.append(categoryFactory.addRecentBoysSection())
-        
-    }
-    
-    func createRecentGirlsSection() {
-        
-        sections.append(categoryFactory.addRecentGirlsSection())
-        
-    }
-    
-    func createPopularSection() {
-        
-        sections.append(categoryFactory.addPopularSection())
-        
-    }
-    
-    func createSpecificSection() {
-        
-        
-    }
-    
-    func createSpecificSearchSection() {
-        
-        
-    }
-    
+
 
 
 
@@ -659,19 +380,10 @@ class Section {
 
 enum SectionType {
     
-    case buttonNoTitle
+   
     
     case videoList
     
-    case buttonWithTitle
-    
-    case slider
-    
-    case specificVideoList
-    
-    case upcomingEventList
-    
-    case squareButtonWithTitle
-    
+
 }
 
