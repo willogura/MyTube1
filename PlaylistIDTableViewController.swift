@@ -206,8 +206,14 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if error != nil {
                 print("Error: " + (error! as NSError).description)
+            } else if (error == nil) {
+                
+                print("ITEM SAVED \(itemToInsert)")
+                
             }
         }
+        
+        
     }
     
     

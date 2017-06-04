@@ -41,8 +41,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     var webView: UIWebView?
     
   
-    
-    @IBOutlet weak var dateLabel: UILabel!
+  
     
     func hidePlayer() {
         
@@ -76,7 +75,44 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
 
-  
+    func autoLoadVideo() {
+        
+       self.video = currentVideo
+        
+        
+        self.thumbnailButton.isHidden = true
+        
+        self.videoLoaded = true
+        
+        
+        
+        webView = UIWebView(frame: self.thumbnailView.frame)
+        
+        self.view.addSubview(webView!)
+        
+        self.view.bringSubview(toFront: webView!)
+        
+    
+        
+        webView?.allowsInlineMediaPlayback = true
+        
+        webView?.mediaPlaybackRequiresUserAction = false
+        
+        var videoID = ""
+        
+        videoID = (video?.sourceUrl)!     // https://www.youtube.com/watch?v=28myxjncnDM     http://www.youtube.com/embed/28myxjncnDM
+        
+        let embededHTML = "<html><body style='margin:0px;padding:0px;'><script type='text/javascript' src='http://www.youtube.com/iframe_api'></script><script type='text/javascript'>function onYouTubeIframeAPIReady(){ytplayer=new YT.Player('playerId',{events:{onReady:onPlayerReady}})}function onPlayerReady(a){a.target.playVideo();}</script><iframe id='playerId' type='text/html' width='\(self.thumbnailView.frame.size.width)' height='\(self.thumbnailView.frame.size.height)' src='http://www.youtube.com/embed/\(videoID)?enablejsapi=1&rel=0&playsinline=1&autoplay=1' frameborder='0'></body></html>"
+        
+        webView?.loadHTMLString(embededHTML, baseURL: Bundle.main.resourceURL)
+        
+
+        
+        
+        
+        
+        
+    }
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -92,6 +128,13 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             showPlayer()
             
         }
+        
+        
+        
+  
+        
+        
+        
         
    
         
@@ -137,20 +180,35 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
  
     
     
-    func loadVideoDescription(video: Video) {
+    func loadVideoDescription(video: Video?) {
         
-      
-        self.navigationItem.title = video.title
+         DispatchQueue.main.async(){
         
-        self.childView.titleLabel.text   = video.title
         
-        self.childView.descriptionLabel.text = video.comments
+      print("LOad description called in Video View controller \(video?.title)")
+        self.navigationItem.title = video?.title
+        
+        self.childView.titleLabel.text   = video?.title
+        
+        self.childView.descriptionLabel.text = video?.comments
         
         self.video = video
         
         self.childView.parentView = self
         
-        self.childView.setVideo(video: video)
+        
+        if(video != nil) {
+        self.childView.setVideo(video: video!)
+            
+            
+            self.autoLoadVideo()
+            
+        }
+            
+        }
+        
+        
+        
         
     }
     
@@ -162,6 +220,8 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         
      
         showPlayer()
+        
+        
         
         self.childView.addVideoButton.setTitle("Save in Library", for: UIControlState.selected)
         
@@ -181,23 +241,12 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             
         }
         
-        if(self.video == nil){
-            
-            print("The video did not load into Video View Controller")
-            
-            self.navigationController?.popViewController(animated: true)
-        }
+      
         
-        /*
-        while(self.video == nil) {   //probably should not use an infinite loop. If the video detail view stalls this is likely why
-            
-            var i = 0
-            
-            i = i + i
-            
-        }
+
+       
+        
  
- */
         
         if let video = self.video {
             
@@ -207,7 +256,9 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
                 
                 loadVideoThumbnail(video: video)
                 
-                showPlayer()
+                //showPlayer()
+            print("AUTO LOAD CALLED")
+            self.autoLoadVideo()
                 
             
             
@@ -231,7 +282,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     }
     
  
-    
+ 
 
     
     
@@ -256,36 +307,13 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         
     }
     
-    
+
     
     func loadVideos() -> [Video]? {
         
         return NSKeyedUnarchiver.unarchiveObject(withFile: Video.ArchiveURL.path) as? [Video]
     }
     
-    
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
-        
-
-        
-        // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways.
-        
-        let isPresentingInAddVideoMode = presentingViewController is UINavigationController
-        
-        if isPresentingInAddVideoMode {
-            
-        
-            
-            dismiss(animated: true, completion: nil)
-            
-        } else {
-            
-    
-            navigationController!.popViewController(animated: true)
-            
-        }
-        
-    }
     
     
     func addVideo(_ sender: AnyObject) {
@@ -337,6 +365,8 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     
     @IBAction func playVideo(_ sender: AnyObject) {
+    
+        print("play button pressed")
         
         self.thumbnailButton.isHidden = true
         
@@ -366,7 +396,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             
             webView?.loadHTMLString(embededHTML, baseURL: Bundle.main.resourceURL)
             
-        
+   
     }
     
 

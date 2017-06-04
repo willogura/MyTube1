@@ -18,11 +18,7 @@ open class Video: NSObject, NSCoding {
     var thumbnail: UIImage?
     
     var comments: String?
-    
 
-    
-
-    
     var thumbnailUrl: NSURL?
     
     var id: Int?
@@ -46,15 +42,9 @@ open class Video: NSObject, NSCoding {
         static let sourceUrlKey = "sourceUrl"
         
         static let commentsKey = "comments"
-        
-  
-        
+
         static let thumbnailUrlKey = "thumbnailUrl"
-        
-       
-        
-     
-        
+
         static let idKey = "id"
         
         

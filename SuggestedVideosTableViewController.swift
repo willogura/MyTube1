@@ -48,9 +48,16 @@ class SuggestedVideosTableViewController: UITableViewController {
         
     }
     
+    
+    
+    
     func setVideo(video: Video) {
         
-       
+      //self.titleLabel.text = video.title
+        
+        
+        
+        
             
             if(self.section == nil) {
                 

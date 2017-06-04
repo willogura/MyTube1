@@ -21,36 +21,33 @@ class MainTableViewController: UITableViewController {
     var parentCategory = featuredCategory
     
 
+    @IBOutlet weak var mainPlayerView: UIView!
     
     @IBOutlet weak var mainTableView: UIView!
     
     @IBOutlet var tableView1: UITableView!
     
-  
     
     
+    var childView: VideoViewController {
+        
+        get {
+            
+            let ctrl = childViewControllers.first(where: { $0 is VideoViewController })
+            
+            return ctrl as! VideoViewController
+        }
+        
+    }
+
     convenience init() {
         
         self.init()
         
         category = self.parentCategory
-        
-    }
-    
-    
-    
-  
-    
-    
-    
 
-    
-    
-   
-    
-  
-    
-    
+    }
+
     func refresh(sender:AnyObject) {
         
         print("refresh called")
@@ -86,6 +83,9 @@ class MainTableViewController: UITableViewController {
         
     
        NotificationCenter.default.addObserver(self, selector: #selector(self.loadVideos), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+      
+  
        
         
     }
@@ -100,13 +100,33 @@ class MainTableViewController: UITableViewController {
             
          self.embeddedViewController?.preloadThumbnails()
             
-      
+            
+
             
             
         }
 
         
       
+    }
+    
+    func loadInitialVideo() {
+        
+       
+        
+        self.childView.loadVideoDescription(video: currentVideo)
+        
+        
+        
+        
+
+        
+        
+        //   self.embeddedViewController?.loadDescription()
+        
+        
+        
+        
     }
     
     

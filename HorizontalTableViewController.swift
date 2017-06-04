@@ -5,7 +5,7 @@ import UIKit
 
 
 var selectedSection = 1
-
+var currentVideo: Video? = nil
 
 class HorizontalTableViewController: UITableViewController {
     
@@ -22,11 +22,7 @@ class HorizontalTableViewController: UITableViewController {
     var defaultDisplayCount = 15
     
     var sectionTitles = [String]()
-    
 
- 
-    
-    
     func applicationDidReceiveMemoryWarning(application: UIApplication) {
         print("memoery warning recevied and caches cleared")
         
@@ -58,12 +54,9 @@ class HorizontalTableViewController: UITableViewController {
     
     
     func preloadThumbnails() {
-        
-        
-        
+
         var videos = [Video]()
-        
-        
+
         DispatchQueue.global(qos: .background).async {
             
             var count = 0
@@ -74,64 +67,31 @@ class HorizontalTableViewController: UITableViewController {
             while (category.sections.count > count) {
                 
                 if(category.sections[count].sectionType == SectionType.videoList   ) {
-                    
-                 
-                        
+        
                         videos =  self.search.getYouTubeVideos(playlist: category.sections[count].sectionPlaylist!)!
-                        
-                     
-                        
-                        
-                        
-                        
+     
                         while (videos.count > index && index < 20) {
-                            
-                            
-                           
-                                
+           
                                 if( videos[index].hasThumbnailUrl()) {
                                     
                                     self.search.getThumbnail(url: (videos[index].thumbnailUrl)!)
                                     
                                     
                                 }
-                                    
-                                 
-                             
-                                
-                                
-                                
-                         
-                                
-                                
-                            
-                            
+      
                             index = index + 1
                         }
                         
                         index = 0
 
-                        
-                        
-                        
-                    
                 }
-                
-                
-                
-                
-                
-                
-                
+
                 count = count + 1
                 
             }
-            
-            
-            
+
         }
-        
- 
+
     }
     
     public func updateTable() {
@@ -199,6 +159,8 @@ class HorizontalTableViewController: UITableViewController {
                                             self.videos.append(trimmedVids)
                                             
                                         }
+                                
+                          
                                         
                                         
                                 
@@ -212,6 +174,21 @@ class HorizontalTableViewController: UITableViewController {
                             index = index + 1
                             
                         }
+                        
+                        if(self.videos.first?.first != nil) {
+                            
+                            currentVideo = (self.videos.first?.first)!
+                            
+                            print("CURRENT VIDEIO LOADS \(currentVideo?.title)")
+                            
+                            
+                            var mainTable = self.parent as! MainTableViewController
+                            
+                            mainTable.loadInitialVideo()
+                            
+                            
+                        }
+                        
                         
                         DispatchQueue.main.async{
                             
@@ -236,6 +213,7 @@ class HorizontalTableViewController: UITableViewController {
             }
             self.preloadThumbnails()
         }
+     
         
         
     }

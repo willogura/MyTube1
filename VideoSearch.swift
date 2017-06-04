@@ -8,17 +8,11 @@ import UIKit
 
 
 class VideoSearch : UIViewController, UITableViewDelegate, UISearchBarDelegate {
-    
-    
-    
+
     fileprivate var searchResults = [Video]()
-    
-    fileprivate var thumbnailResults = [Thumbnail]()
-    
+
     let defaultSession = URLSession(configuration: URLSessionConfiguration.default)
-    
- 
-    
+
     /// Creates the NSURL session necessary to download content from remote URL.
     
     fileprivate func getNSURLSession() -> URLSession {
@@ -26,10 +20,7 @@ class VideoSearch : UIViewController, UITableViewDelegate, UISearchBarDelegate {
         //   let defaultSession = URLSession(configuration: URLSessionConfiguration.default)
         
         //  session.configuration.urlCache?.removeAllCachedResponses()
-        
-        
-        
-        
+ 
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         return defaultSession
@@ -49,26 +40,18 @@ class VideoSearch : UIViewController, UITableViewDelegate, UISearchBarDelegate {
         
         
         let playlistID = playlist
-        
-        
-        
-        
+   
         let apiKey = "AIzaSyAXDqPJiyrh1QW2X_-Dy_KUWxIez9E2FHU"
-        
-        
+
         let maxResults = 50
         
         
         //this gives all videos within a specifed playlist
-        
-       
+
         let urlString = URL( string: "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=\(playlistID)&key=\(apiKey)&maxResults=\(maxResults)")
 
-        
   //gives recent uploads id for channel  https://www.googleapis.com/youtube/v3/channels?part=contentDetails&forUsername=CTVnorthsuburbs&key=AIzaSyAXDqPJiyrh1QW2X_-Dy_KUWxIez9E2FHU
-        
-        
-        
+
         //this gives all playlists with id for given channel
         
         //   let urlString = URL( string: "https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=UCItaxOh-FCAiD2Hjqt1KlEw&key=AIzaSyAXDqPJiyrh1QW2X_-Dy_KUWxIez9E2FHU&maxResults=\(maxResults)")
@@ -101,24 +84,18 @@ class VideoSearch : UIViewController, UITableViewDelegate, UISearchBarDelegate {
     fileprivate func getYoutubePlaylists(_ defaultSession: URLSession, url: URL) -> [Video]? {
         
         let semaphore = DispatchSemaphore(value: 0)
-        var video: Video?
         
+        var video: Video?
         
         var videoResults = [Video]()
         
         var dataTask: URLSessionDataTask?
-        
-       
-        
-       
-        
+ 
         if dataTask != nil {
             
             dataTask?.cancel()
             
         }
-        
-      
         
         dataTask = defaultSession.dataTask(with: url, completionHandler: {
             
@@ -156,11 +133,7 @@ class VideoSearch : UIViewController, UITableViewDelegate, UISearchBarDelegate {
                         
                         
                         for result in results.items! {
-                            
-                            
-                            
-                            
-                            
+
                             guard let snippet = YoutubeItems(json: result as! JSON) else {
                                 
                                 
@@ -169,10 +142,7 @@ class VideoSearch : UIViewController, UITableViewDelegate, UISearchBarDelegate {
                                 
                                 return
                             }
-                            
-                            
-                            
-                            
+        
                             let videoSnippet = snippet.snippet
                             
                             let title = videoSnippet?.title
@@ -193,26 +163,22 @@ class VideoSearch : UIViewController, UITableViewDelegate, UISearchBarDelegate {
                             }
                             
                             let description = videoSnippet?.description
-                            
-                          
-                            
+    
                             var videoId = "0"
                             
                             if(videoSnippet?.resourceId?.videoId != nil) {
+                                
                             videoId  = (videoSnippet?.resourceId?.videoId)!
+                                
                             }
-                            //   var id = "https://www.youtube.com/watch?v=\(videoId)"
-                            
-                            
+    
                             var id = "0"
                             
                             id =   videoId
        
                             if(thumbnail != nil) {
                                 video = Video(title: title!, thumbnail: nil, fileName: 1, sourceUrl: id, comments: description!, thumbnailUrl: NSURL(string: thumbnail!), id: 1)
-                                
-                                
-                                
+         
                                 videoResults.append(video!)
                                 
                             } 
@@ -277,99 +243,7 @@ class VideoSearch : UIViewController, UITableViewDelegate, UISearchBarDelegate {
     
 
     
-    fileprivate func getThumbnailResults(_ defaultSession: URLSession, url: URL) -> String? {
-        
-        
-        let semaphore = DispatchSemaphore(value: 0)
-        
-        
-        var dataTask: URLSessionDataTask?
-        
-        var thumbnail : String?
-        
-        if dataTask != nil {
-            
-            dataTask?.cancel()
-            
-        }
-        
-        
-        
-        dataTask = URLSession.shared.dataTask(with: url, completionHandler: {
-            
-            data, response, error in
-            
-            DispatchQueue.main.async {
-                
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                
-            }
-            
-            if let error = error {
-                
-                print(error.localizedDescription)
-                
-            } else if let httpResponse = response as? HTTPURLResponse {
-                
-                if httpResponse.statusCode == 200 {
-                    
-                    
-                    
-                    var json: [String: AnyObject]!
-                    
-                    
-                    do {
-                        
-                        json = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions()) as? [String: AnyObject]
-                        
-                        
-                        
-                    } catch {
-                        
-                        print(error)
-                        
-                    }
-                    
-                    
-                    
-                    guard let results = Thumbnail(json: json) else {
-                        
-                        return
-                    }
-                    
-                    guard let result = results.thumbnail else {
-                        
-                        return
-                    }
-                    
-                    
-                    thumbnail = result.url
-                    
-                    
-                    
-                    
-                }
-                
-            }
-            semaphore.signal()
-            
-        })
-        
-        
-        
-        
-        dataTask?.resume()
-        
-        semaphore.wait(timeout: .distantFuture)
-        
-        
-        
-        
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        return thumbnail
-        
-    }
-    
+
     
     
 

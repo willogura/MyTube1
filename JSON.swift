@@ -3,34 +3,6 @@
 import Foundation
 
 
-
-
-
-
-public struct Thumbnail: Decodable {
-    
-    public let thumbnail: Thumbnails?
-    
-    public init?(json: JSON) {
-        
-        guard let thumbnail: Thumbnails = "thumbnail" <~~ json
-            
-            else {
-                
-                print("JSON Thumbnail doesnt execute")
-                
-                return nil }
-        
-        self.thumbnail = thumbnail
-        
-        
-        
-    }
-    
-}
-
-
-
 public struct YoutubeVideo: Decodable {
     
     public let items: [NSDictionary]?
@@ -183,42 +155,6 @@ public struct YoutubeSnippet: Decodable {
  
         
         self.resourceId = resource
-        
-    }
-    
-}
-
-
-public struct Thumbnails: Decodable {
-    
-    
-    public let id: Int
-    
-    public let url: String
-    
-    public init?(json: JSON) {
-        
-        
-        
-        guard let id: Int = "id" <~~ json
-            
-            else {
-                
-                print("id")
-                
-                return nil }
-        
-        guard let url: String = "url" <~~ json
-            
-            else {
-                
-                print("url not working")
-                
-                return nil }
-        
-        self.url = url
-        
-        self.id = id
         
     }
     
