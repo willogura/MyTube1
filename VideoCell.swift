@@ -50,7 +50,7 @@ class VideoCell: UITableViewCell {
 
     
     @IBAction func thumbnailTapped(_ sender: AnyObject) {
-        
+        print("GESTS CALLED  ")
         delegate?.thumbnailTapped(self)
         
     }

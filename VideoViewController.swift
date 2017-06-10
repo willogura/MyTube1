@@ -105,13 +105,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         let embededHTML = "<html><body style='margin:0px;padding:0px;'><script type='text/javascript' src='http://www.youtube.com/iframe_api'></script><script type='text/javascript'>function onYouTubeIframeAPIReady(){ytplayer=new YT.Player('playerId',{events:{onReady:onPlayerReady}})}function onPlayerReady(a){a.target.playVideo();}</script><iframe id='playerId' type='text/html' width='\(self.thumbnailView.frame.size.width)' height='\(self.thumbnailView.frame.size.height)' src='http://www.youtube.com/embed/\(videoID)?enablejsapi=1&rel=0&playsinline=1&autoplay=1' frameborder='0'></body></html>"
         
         webView?.loadHTMLString(embededHTML, baseURL: Bundle.main.resourceURL)
-        
 
-        
-        
-        
-        
-        
     }
     
     
@@ -203,6 +197,10 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
             
             self.autoLoadVideo()
             
+            self.loadVideoThumbnail(video: video!)
+            
+            // toggle Add Button again, otherwise if a new video is selected after a video has been 'liked', then the button remains 'liked'
+            self.toggleAddButton()
         }
             
         }
@@ -222,8 +220,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
         showPlayer()
         
         
-        
-        self.childView.addVideoButton.setTitle("Save in Library", for: UIControlState.selected)
+    
         
         super.viewDidLoad()
         
@@ -323,11 +320,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
                 saveVideos()
             }
         }
-        
-     
-        
-    
-        
+
     }
     
     func hasSavedVideo() -> Bool {
@@ -345,6 +338,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     
     func saveVideos() {
         
+    
         
         myVideos.append(video!)
         
@@ -406,20 +400,14 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
     func toggleAddButton() {
         
         if(video != nil) {
-            
-          
-                
+     
                 if(hasSavedVideo()) {
                     
-                    if(currentCategory?.videoType != VideoType.youtube  ) {
-                        
-                        childView.addVideoButton.setTitle("Save in Library", for: UIControlState.selected)
-                        
-                    } else {
+                   
                         
                         childView.addVideoButton.setTitle("Loved It", for: UIControlState.selected)
                         
-                    }
+                    
                     
                     childView.addVideoButton.isSelected = true
                     
@@ -429,9 +417,7 @@ class VideoViewController: UIViewController, UITextFieldDelegate, UIImagePickerC
                     
                     childView.addVideoButton.isSelected = false
                 }
-                
-            
-            
+
         }
     }
     

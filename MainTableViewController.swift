@@ -115,17 +115,11 @@ class MainTableViewController: UITableViewController {
        
         
         self.childView.loadVideoDescription(video: currentVideo)
-        
-        
-        
-        
-
-        
+    
         
         //   self.embeddedViewController?.loadDescription()
         
-        
-        
+
         
     }
     

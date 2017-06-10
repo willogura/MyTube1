@@ -86,6 +86,10 @@ class SuggestedVideosTableViewController: UITableViewController {
             tableView.reloadData()
         }
         
+        
+        
+        
+        
     }
     
     
@@ -116,123 +120,12 @@ class SuggestedVideosTableViewController: UITableViewController {
     }
     
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "ShowDetail" {
-            
-            
-       
-            
-       //     let videoDetailViewController = segue.destination as! VideoViewController
-            
-            LoadingOverlay.shared.showOverlay(view: self.navigationController?.view)
-            
-            
-            DispatchQueue.global(qos: .userInitiated).async {
-                
-                if let selectedVideoCell = sender as? MainVideoCell {
-                    
-                    let indexPath = self.tableView.indexPath(for: selectedVideoCell)!
-                    
-                    
-                    let selectedVideo = self.myVideos[indexPath.row]
-                    
-              
-                       let videoDetailViewController = segue.destination as! VideoViewController
-                    
-                    videoDetailViewController.video = selectedVideo
-                    
-                    suggestedSearch = category.sections[self.section!]
-                    
-                    selectedSection = self.section!
-                    
-                    
-              
-                
-                    DispatchQueue.main.async( execute: {
-                        
-                        LoadingOverlay.shared.hideOverlayView()
-                    })
-                 
-                    }
-                
-                
-            }
-            
-        
-            
-        }
-        
-    }
+
     
     
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath) as? MainVideoCell
-        
-        video = recommendedVideos[indexPath.row]
-        
-        cell?.titleLabel?.text = recommendedVideos[indexPath.row].title
-        
-    
-        
-        if(recommendedVideos[indexPath.row].thumbnail != nil) {
-            
-            cell?.thumbnailView.image = recommendedVideos[indexPath.row].thumbnail
-            
-        }
-        
-        cell?.thumbnailView.setRadius(radius: imageRadius)
-        
-        if(self.recommendedVideos[indexPath.row].thumbnail == nil) {
-            
-            DispatchQueue.global(qos: .background).async { //generate thumbnail in bacground
-                
-                
-                if( self.recommendedVideos[indexPath.row].hasThumbnailUrl()) {
-                    
-                    self.recommendedVideos[indexPath.row].thumbnail =  returnImageUsingCacheWithURLString(url: self.recommendedVideos[indexPath.row].thumbnailUrl!)
-                    
-                } else {
-                    
-                    
-                    if( self.recommendedVideos[indexPath.row].thumbnailUrl != nil) {
-                        
-                        self.recommendedVideos[indexPath.row].thumbnail =  returnImageUsingCacheWithURLString(url: self.recommendedVideos[indexPath.row].thumbnailUrl!)
-                        
-                    }
-                    
-                }
-                
-                DispatchQueue.main.async {
-                    
-                    let thumbnail = self.recommendedVideos[indexPath.row].thumbnail
-                    
-                    if(thumbnail != nil) {
-                        
-                        cell?.thumbnailView.image =  self.recommendedVideos[indexPath.row].thumbnail
-                        
-                    }
-                    
-                }
-                
-            }
-            
-        }
-        return cell!
-        
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return 1
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return recommendedVideos.count
-    }
-    
+
+
+
     
     @IBAction func addVideoPressed(_ sender: AnyObject) {
         

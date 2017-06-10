@@ -17,7 +17,7 @@ var myVideos = [Video]()
 
 
 
-class MyVideosViewController: UITableViewController{
+class MyVideosViewController: UITableViewController, VideoCellDelegate{
     
     var videos = [Video]()
     
@@ -103,34 +103,37 @@ class MyVideosViewController: UITableViewController{
     
     func playVideo(_ video: Video) {
         
-     
-       
-            
-            if let urlString = video.sourceUrl {
-                print("url string \(urlString)")
-                
-                let fileUrl = URL(string: urlString)
-                
-          
-           
-                let asset = AVAsset(url: fileUrl!)
-                
-                let playerItem = AVPlayerItem(asset: asset)
-                
-                let fullScreenPlayer = AVPlayer(playerItem: playerItem)
-                
-                fullScreenPlayer.play()
-                
-                let fullScreenPlayerViewController = AVPlayerViewController()
-                
-                fullScreenPlayerViewController.player = fullScreenPlayer
-                
-                present(fullScreenPlayerViewController, animated: true, completion: nil)
-                
-     
-                
-            }
-            
+
+       /*
+        
+        //var webView = UIWebView()
+        
+        self.view.addSubview(webView)
+        
+        self.view.bringSubview(toFront: webView)
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        appDelegate.shouldRotate = true // or false to disable rotation
+        
+        webView.allowsInlineMediaPlayback = true
+        
+        webView.mediaPlaybackRequiresUserAction = false
+        
+        var videoID = ""
+        
+        videoID = (video.sourceUrl)!     // https://www.youtube.com/watch?v=28myxjncnDM     http://www.youtube.com/embed/28myxjncnDM
+        
+        let embededHTML = "<html><body style='margin:0px;padding:0px;'><script type='text/javascript' src='http://www.youtube.com/iframe_api'></script><script type='text/javascript'>function onYouTubeIframeAPIReady(){ytplayer=new YT.Player('playerId',{events:{onReady:onPlayerReady}})}function onPlayerReady(a){a.target.playVideo();}</script><iframe id='playerId' type='text/html' width='\(self)' height='\(self)' src='http://www.youtube.com/embed/\(videoID)?enablejsapi=1&rel=0&playsinline=1&autoplay=1' frameborder='0'></body></html>"
+        
+        webView.loadHTMLString(embededHTML, baseURL: Bundle.main.resourceURL)
+        
+        
+        */
+        
+        
+        
+        
         
         
     }
@@ -152,7 +155,7 @@ class MyVideosViewController: UITableViewController{
         video = myVideos[(indexPath as NSIndexPath).row]
         
         
-      
+       cell.delegate = self
         
         cell.titleLabel.text = video!.title
         
@@ -180,6 +183,9 @@ class MyVideosViewController: UITableViewController{
     
     func thumbnailTapped(_ cell: VideoCell) {
         
+        
+       print("get here too")
+        
         if let indexPath = tableView.indexPath(for: cell) {
             
             let video = myVideos[(indexPath as NSIndexPath).row]
@@ -190,7 +196,7 @@ class MyVideosViewController: UITableViewController{
             
             appDelegate.shouldRotate = true // or false to disable rotation
             
-            
+           
             playVideo(video)
             
         }

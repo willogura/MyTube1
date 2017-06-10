@@ -376,6 +376,8 @@ class HorizontalTableViewController: UITableViewController {
         
     }
     
+ 
+    
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
@@ -398,6 +400,8 @@ class HorizontalTableViewController: UITableViewController {
     }
     
     
+    
+
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -481,6 +485,32 @@ extension HorizontalTableViewController: UICollectionViewDelegate, UICollectionV
     }
     
     
+     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+     
+        
+       
+            
+         var video = videos[collectionView.tag][indexPath.item]
+        
+        
+        print("Video Selected from horizontal collection view\(video?.title)")
+        
+        
+        //set the global variable currentVideo to the selected video
+        
+        currentVideo = video
+        
+        
+        var parent = self.parent as! MainTableViewController
+        
+        //get the parent mainTable and loadInitialVideo which loads the currentVideo
+        
+        parent.loadInitialVideo()
+        
+        
+            }
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
  
@@ -505,29 +535,23 @@ extension HorizontalTableViewController: UICollectionViewDelegate, UICollectionV
             if (videos[safe: indexPath.item]?.fileName != nil) {
                 
               
-                
-                if( videos[indexPath.item].hasThumbnailUrl()) {
-                    
+              
            
                     
                     cells.thumbnail.image = self.search.getThumbnail(url: (videos[indexPath.item].thumbnailUrl)!)
                     
+              
                     
-                } else {
-                    
-               
-                    
-                  //  videos[indexPath.item].generateThumbnailUrl()
-                    
-                    cells.thumbnail.image = self.search.getThumbnail(url: (videos[indexPath.item].thumbnailUrl)!)
-                    
-                }
+                
                 
                 
                 cells.thumbnail.setRadius(radius: imageRadius)
                 
                 
                 cells.titleLabel.text = videos[indexPath.item].title
+                
+                
+                
                 
               
                 
@@ -557,10 +581,7 @@ extension HorizontalTableViewController: UICollectionViewDelegate, UICollectionV
         
     }
     
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-    }
+ 
     
 }
 
