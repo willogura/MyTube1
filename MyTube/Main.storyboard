@@ -313,7 +313,6 @@
         <!--Search-->
         <scene sceneID="HqE-ox-VMa">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pZw-Od-XaT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hyN-G1-uzI" userLabel="Search" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="contacts" id="dum-Zn-k6J" userLabel="Search"/>
                     <toolbarItems/>
@@ -333,6 +332,7 @@
                         <segue destination="inX-rL-Nxt" kind="relationship" relationship="rootViewController" id="hNK-ko-4Xg"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pZw-Od-XaT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1462" y="-1041"/>
         </scene>
@@ -494,7 +494,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Sign-in" id="EF0-67-wNd">
                             <color key="tintColor" red="0.97224408389999994" green="0.98378676180000002" blue="0.79552501440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <segue destination="abI-ie-ak2" kind="show" id="d5i-wr-oeu"/>
+                                <segue destination="abI-ie-ak2" kind="show" identifier="SignPressed" id="d5i-wr-oeu"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="2XF-qq-33Q">
@@ -509,10 +509,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
+                    <connections>
+                        <outlet property="accountTitle" destination="3Qm-ok-TsG" id="oxU-NB-CYd"/>
+                        <outlet property="addButton" destination="2XF-qq-33Q" id="5Uv-qB-Yne"/>
+                        <outlet property="signInButton" destination="EF0-67-wNd" id="woq-ae-sKS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Su-zg-D7p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2222" y="-1041"/>
+            <point key="canvasLocation" x="2337" y="-1434"/>
         </scene>
         <!--Add Playlist ID-->
         <scene sceneID="5Rx-LB-HNU">
@@ -533,7 +538,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yCu-OG-zC4">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yCu-OG-zC4">
                                 <rect key="frame" x="16" y="118" width="239" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -541,9 +546,9 @@
                         </subviews>
                         <color key="backgroundColor" red="0.74562054870000005" green="0.74619406460000004" blue="0.74570947889999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="yCu-OG-zC4" firstAttribute="leading" secondItem="P7w-Jz-4vy" secondAttribute="leadingMargin" constant="104" id="Kcy-6K-TnU"/>
-                            <constraint firstItem="yCu-OG-zC4" firstAttribute="top" secondItem="EW3-Kn-Ebv" secondAttribute="bottom" constant="20" id="NjK-ee-5Fg"/>
-                            <constraint firstItem="yCu-OG-zC4" firstAttribute="trailing" secondItem="P7w-Jz-4vy" secondAttribute="trailingMargin" id="NpW-jd-Ndb"/>
+                            <constraint firstItem="yCu-OG-zC4" firstAttribute="leading" secondItem="P7w-Jz-4vy" secondAttribute="leadingMargin" id="Kcy-6K-TnU"/>
+                            <constraint firstItem="yCu-OG-zC4" firstAttribute="top" secondItem="EW3-Kn-Ebv" secondAttribute="bottom" constant="98" id="NjK-ee-5Fg"/>
+                            <constraint firstItem="yCu-OG-zC4" firstAttribute="trailing" secondItem="P7w-Jz-4vy" secondAttribute="trailingMargin" constant="-104" id="NpW-jd-Ndb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Add Playlist ID" id="BT8-l5-ct6">
@@ -659,6 +664,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="passwordStarted:" destination="abI-ie-ak2" eventType="editingDidBegin" id="638-iE-I3t"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WF0-ws-63M">
                                         <rect key="frame" x="8" y="19" width="106" height="21"/>
@@ -678,13 +686,18 @@
                                         <rect key="frame" x="70" y="153" width="111" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SIGN-IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AuU-Oa-gi0">
-                                                <rect key="frame" x="2" y="12" width="106" height="21"/>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N7j-BX-C04">
+                                                <rect key="frame" x="20" y="7" width="71" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="19"/>
-                                                <color key="textColor" red="0.97224408389999994" green="0.98378676180000002" blue="0.79552501440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                                <state key="normal" title="Sign-In">
+                                                    <color key="titleColor" red="0.97224408389999994" green="0.98378676180000002" blue="0.79552501440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="savePressed:" destination="Vlt-fR-mHJ" eventType="touchUpInside" id="abP-kH-huC"/>
+                                                    <action selector="signInPressed:" destination="abI-ie-ak2" eventType="touchUpInside" id="ohY-e9-sFq"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.60929173231124878" green="0.84590154886245728" blue="0.44748640060424805" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
@@ -706,6 +719,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="usernameStarted:" destination="abI-ie-ak2" eventType="editingDidBegin" id="53h-yk-eT3"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" red="0.90588235289999997" green="0.1450980392" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -715,6 +731,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="23"/>
                                 <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJo-Uj-D6X">
+                                <rect key="frame" x="95" y="464" width="164" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                <color key="textColor" red="0.97224408389999994" green="0.98378676180000002" blue="0.79552501440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -730,7 +753,10 @@
                     </navigationItem>
                     <connections>
                         <outlet property="greenButton" destination="37h-KJ-sxL" id="bZj-2Q-6gg"/>
+                        <outlet property="passwordField" destination="YKa-d1-lhf" id="k81-1f-uaK"/>
                         <outlet property="signInView" destination="vwE-KE-ZXW" id="fgg-1q-TDL"/>
+                        <outlet property="textOutput" destination="IJo-Uj-D6X" id="v7L-WR-l6w"/>
+                        <outlet property="usernameField" destination="ppG-fP-CZU" id="aCS-HU-HAi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HZr-1l-rS5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -779,13 +805,17 @@
                                         <rect key="frame" x="70" y="153" width="111" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SAVE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OhP-yN-Qm1">
-                                                <rect key="frame" x="2" y="12" width="106" height="21"/>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AKO-pR-Rky">
+                                                <rect key="frame" x="20" y="8" width="71" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="19"/>
-                                                <color key="textColor" red="0.97224408389999994" green="0.98378676180000002" blue="0.79552501440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                                <state key="normal" title="Save">
+                                                    <color key="titleColor" red="0.97224408389999994" green="0.98378676180000002" blue="0.79552501440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="savePressed:" destination="Vlt-fR-mHJ" eventType="touchUpInside" id="CGz-uG-NGP"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.6092917323" green="0.84590154890000002" blue="0.4474864006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
@@ -807,6 +837,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LLb-F5-nY2">
+                                <rect key="frame" x="105" y="437" width="164" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                <color key="textColor" red="0.97224408389999994" green="0.98378676180000002" blue="0.79552501440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.74562054870000005" green="0.74619406460000004" blue="0.74570947889999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -814,23 +851,25 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="5qK-gB-qkp">
                             <color key="tintColor" red="0.97224408389999994" green="0.98378676180000002" blue="0.79552501440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <segue destination="abI-ie-ak2" kind="show" id="z3d-uJ-DWi"/>
+                                <segue destination="abI-ie-ak2" kind="show" identifier="cancel" id="z3d-uJ-DWi"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="greenButton" destination="cCY-ft-4fK" id="kT4-wL-Fby"/>
+                        <outlet property="passwordField" destination="v71-bQ-bAB" id="FLI-H1-fg3"/>
                         <outlet property="signInView" destination="P5U-hA-Mh9" id="A4N-cV-dbN"/>
+                        <outlet property="textOutput" destination="LLb-F5-nY2" id="xi9-xF-EyS"/>
+                        <outlet property="usernameField" destination="rcf-K7-g0o" id="hlr-nq-PID"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4QL-pS-49L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2222" y="-349"/>
+            <point key="canvasLocation" x="2221.5999999999999" y="-349.47526236881561"/>
         </scene>
         <!--Search-->
         <scene sceneID="bBE-TR-GwW">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4jl-f0-Kyw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Bqt-mG-92F" userLabel="Search" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="contacts" id="VsM-Va-OFi" userLabel="Search"/>
                     <toolbarItems/>
@@ -850,6 +889,7 @@
                         <segue destination="Vlt-fR-mHJ" kind="relationship" relationship="rootViewController" id="BDP-rp-teU"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4jl-f0-Kyw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2962" y="-349"/>
         </scene>
@@ -859,10 +899,10 @@
         <image name="playButton-#fff-100" width="1242" height="698"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hNK-ko-4Xg"/>
-        <segue reference="d5i-wr-oeu"/>
         <segue reference="yQr-UQ-GkP"/>
+        <segue reference="z3d-uJ-DWi"/>
+        <segue reference="P7O-6a-DJ6"/>
+        <segue reference="IWC-IU-ogf"/>
         <segue reference="TiQ-iG-Egd"/>
-        <segue reference="BDP-rp-teU"/>
     </inferredMetricsTieBreakers>
 </document>

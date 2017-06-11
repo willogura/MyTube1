@@ -18,19 +18,39 @@ import UIKit
 import CoreData
 
 
+
+
+
 class PlaylistIDViewController: UITableViewController, NSFetchedResultsControllerDelegate, PlaylistIDItemDelegate {
     
     var table : MSSyncTable?
     var store : MSCoreDataStore?
     
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    
+    
+    
+    @IBOutlet weak var accountTitle: UINavigationItem!
+    
+    @IBOutlet weak var signInButton: UIBarButtonItem!
+    
     lazy var fetchedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
+        
+        
+        
+        
         let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "TodoItem")
         let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!
         
-        // show only non-completed items
-        fetchRequest.predicate = NSPredicate(format: "complete != true")
         
+        
+        
+        fetchRequest.predicate = NSPredicate(format: "user == [c] %@", globalUsername)
+        // show only non-completed items
+    
         // sort by item text
+        
+        
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
         
         // Note: if storing a lot of data, you should specify a cache for the last parameter
@@ -39,13 +59,53 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
         
         resultsController.delegate = self;
         
+       
+        
         return resultsController
+            
+   
+        
+        
     }()
+    
+    
+
+        
+        
+    override func viewWillAppear(_ animated: Bool) {
+        if(globalUsername != "Default") {
+            
+            
+            signInButton.title = "Sign-Out"
+            
+            addButton.isEnabled = true
+        } else {
+            
+            addButton.isEnabled = false
+            
+        }
+        
+       
+    }
+        
+        
+        
+        
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+     
+        
+        
         // Do any additional setup after loading the view, typically from a nib.
         
+        
+        
+      
         let client = MSClient(applicationURLString: "https://woguramobileapp.azurewebsites.net")
         let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!
         self.store = MSCoreDataStore(managedObjectContext: managedObjectContext)
@@ -62,15 +122,57 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
             abort()
         }
 
+        
+     
         // Refresh data on load
         self.refreshControl?.beginRefreshing()
         self.onRefresh(self.refreshControl)
+            
+        
+        
+        
+        
     }
     
     func onRefresh(_ sender: UIRefreshControl!) {
+        
+        
+        print(globalUsername)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        self.table!.pull(with: self.table?.query(), queryId: "AllRecords") {
+        
+        
+let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
+        
+        
+        
+        fetchedResultController.fetchRequest.predicate = userCheckPredicate
+        
+        var error : NSError? = nil
+        do {
+            try self.fetchedResultController.performFetch()
+            
+            
+            
+ 
+            
+            
+        } catch let error1 as NSError {
+            error = error1
+            print("Unresolved error \(error), \(error?.userInfo)")
+            abort()
+        }
+        
+        
+        
+        
+        /*
+         self.table!.pull(with: self.table?.query(with: userCheckPredicate), queryId: "AllRecords")
+ 
+ */
+        
+        
+        self.table!.pull(with: self.table?.query(with: userCheckPredicate), queryId: "AllRecords") {
             (error) -> Void in
             
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -95,6 +197,11 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
                 }
             }
             
+            
+            
+         
+            
+            
             self.refreshControl?.endRefreshing()
         }
     }
@@ -117,18 +224,21 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
     
     override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String?
     {
-        return "Complete"
+        return "Delete"
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     {
+        
+    
+        
         let record = self.fetchedResultController.object(at: indexPath) as! NSManagedObject
         var item = self.store!.tableItem(from: record)
-        item["complete"] = true
+       
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        self.table!.update(item) { (error) -> Void in
+       
+        self.table!.delete(item) { (error) -> Void in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if error != nil {
                 print("Error: \((error! as NSError).description)")
@@ -140,6 +250,9 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if let sections = self.fetchedResultController.sections {
+            
+            
+            
             return sections[section].numberOfObjects
         }
         
@@ -161,6 +274,9 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
         // Set the label on the cell and make sure the label color is black (in case this cell
         // has been reused and was previously greyed out
         if let text = item.value(forKey: "text") as? String {
+            
+            
+            
             cell.textLabel!.text = text
         } else {
             cell.textLabel!.text = "?"
@@ -185,6 +301,36 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
             let todoController = segue.destination as! PlaylistIDItemViewController
             todoController.delegate = self
         }
+        
+        
+        if segue.identifier == "SignPressed" {
+            
+            
+            if(globalUsername != "Default") {
+            let alert = UIAlertController(title: "You Have Been Signed-Out", message: "Please Sign-In again", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: .destructive) { action in
+                // perhaps use action.title here
+                })
+            
+            self.present(alert, animated: true)
+                
+                globalUsername = "Default"
+                
+                self.signInButton.title = "Sign-In"
+               
+                self.refreshControl?.beginRefreshing()
+                self.onRefresh(self.refreshControl)
+                
+                self.tableView.reloadData()
+                
+                self.addButton.isEnabled = false
+                
+                
+            }
+        }
+        
+        
+        
     }
     
     
@@ -198,7 +344,7 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
         }
         
         // We set created at to now, so it will sort as we expect it to post the push/pull
-        let itemToInsert = ["text": text, "complete": false, "__createdAt": Date()] as [String : Any]
+        let itemToInsert = ["text": text, "user": globalUsername, "complete": false, "__createdAt": Date()] as [String : Any]
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.table!.insert(itemToInsert) {

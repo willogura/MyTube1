@@ -24,6 +24,7 @@ class HorizontalTableViewController: UITableViewController {
     var sectionTitles = [String]()
 
     func applicationDidReceiveMemoryWarning(application: UIApplication) {
+        
         print("memoery warning recevied and caches cleared")
         
         URLCache.shared.removeAllCachedResponses()
@@ -37,22 +38,13 @@ class HorizontalTableViewController: UITableViewController {
     
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        
-     
-            
+
             saveFeaturedVideos()
-            
-        
-        
+
         self.updateTable()
-        
-        
-        
+
     }
-    
-    
-    
+
     func preloadThumbnails() {
 
         var videos = [Video]()
@@ -180,7 +172,6 @@ class HorizontalTableViewController: UITableViewController {
                             currentVideo = (self.videos.first?.first)!
                             
                             print("CURRENT VIDEIO LOADS \(currentVideo?.title)")
-                            
                             
                             var mainTable = self.parent as! MainTableViewController
                             
