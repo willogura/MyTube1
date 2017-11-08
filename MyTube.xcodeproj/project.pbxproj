@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8D9A5C581EDA0D370006BB3E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D9A5C571EDA0D370006BB3E /* WebKit.framework */; };
 		8D9A5C5A1EDA0D470006BB3E /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D9A5C591EDA0D470006BB3E /* SafariServices.framework */; };
-		8D9A5C631EDA0F020006BB3E /* QSTodoDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8D9A5C611EDA0F020006BB3E /* QSTodoDataModel.xcdatamodeld */; };
 		8DE66FB71EE464B600940761 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE66FB61EE464B600940761 /* SignInViewController.swift */; };
 		8DE66FB91EE467CA00940761 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE66FB81EE467CA00940761 /* CreateAccountViewController.swift */; };
 		8DE935E21ED9E09200A4BB62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE935E11ED9E09200A4BB62 /* AppDelegate.swift */; };
@@ -43,12 +42,12 @@
 		8DE9373C1EDA059200A4BB62 /* PlaylistIDTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9373A1EDA059200A4BB62 /* PlaylistIDTableViewController.swift */; };
 		8DE9373D1EDA059200A4BB62 /* PlaylistItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9373B1EDA059200A4BB62 /* PlaylistItemViewController.swift */; };
 		8DE937561EDA0A8800A4BB62 /* MicrosoftAzureMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE937551EDA0A8800A4BB62 /* MicrosoftAzureMobile.framework */; };
+		8DF8BD1E1FB3726D00529EEF /* QSTodoDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8DF8BD1C1FB3726D00529EEF /* QSTodoDataModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8D9A5C571EDA0D370006BB3E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8D9A5C591EDA0D470006BB3E /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
-		8D9A5C621EDA0F020006BB3E /* QSTodoDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QSTodoDataModel.xcdatamodel; sourceTree = "<group>"; };
 		8DE66FB61EE464B600940761 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		8DE66FB81EE467CA00940761 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		8DE935DE1ED9E09200A4BB62 /* MyTube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTube.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +85,7 @@
 		8DE9373B1EDA059200A4BB62 /* PlaylistItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistItemViewController.swift; sourceTree = "<group>"; };
 		8DE937551EDA0A8800A4BB62 /* MicrosoftAzureMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MicrosoftAzureMobile.framework; sourceTree = "<group>"; };
 		8DE937571EDA0AAC00A4BB62 /* MyTube-Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MyTube-Swift.h"; path = "../MyTube-Swift.h"; sourceTree = "<group>"; };
+		8DF8BD1D1FB3726D00529EEF /* QSTodoDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QSTodoDataModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,7 +144,7 @@
 		8DE935E01ED9E09200A4BB62 /* MyTube */ = {
 			isa = PBXGroup;
 			children = (
-				8D9A5C611EDA0F020006BB3E /* QSTodoDataModel.xcdatamodeld */,
+				8DF8BD1C1FB3726D00529EEF /* QSTodoDataModel.xcdatamodeld */,
 				8DE937571EDA0AAC00A4BB62 /* MyTube-Swift.h */,
 				8DE935E11ED9E09200A4BB62 /* AppDelegate.swift */,
 				8DE935E31ED9E09200A4BB62 /* ViewController.swift */,
@@ -296,6 +296,7 @@
 				8DE936DD1ED9E0D900A4BB62 /* Encoder.swift in Sources */,
 				8DE937011ED9E13700A4BB62 /* SuggestedVideosTableViewController.swift in Sources */,
 				8DE9370D1ED9E13E00A4BB62 /* HorizontalCollectionViewCell.swift in Sources */,
+				8DF8BD1E1FB3726D00529EEF /* QSTodoDataModel.xcdatamodeld in Sources */,
 				8DE66FB71EE464B600940761 /* SignInViewController.swift in Sources */,
 				8DE936E81ED9E0EA00A4BB62 /* Updater.swift in Sources */,
 				8DE936E21ED9E0E300A4BB62 /* Video.swift in Sources */,
@@ -312,7 +313,6 @@
 				8DE937001ED9E13700A4BB62 /* VideoViewController.swift in Sources */,
 				8DE936EE1ED9E11E00A4BB62 /* CategoryFactories.swift in Sources */,
 				8DE936F61ED9E12B00A4BB62 /* MyVideosViewController.swift in Sources */,
-				8D9A5C631EDA0F020006BB3E /* QSTodoDataModel.xcdatamodeld in Sources */,
 				8DE9371B1ED9E15300A4BB62 /* ImageHandler.swift in Sources */,
 				8DE936E71ED9E0EA00A4BB62 /* VideoSearch.swift in Sources */,
 			);
@@ -483,14 +483,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8D9A5C611EDA0F020006BB3E /* QSTodoDataModel.xcdatamodeld */ = {
+		8DF8BD1C1FB3726D00529EEF /* QSTodoDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8D9A5C621EDA0F020006BB3E /* QSTodoDataModel.xcdatamodel */,
+				8DF8BD1D1FB3726D00529EEF /* QSTodoDataModel.xcdatamodel */,
 			);
-			currentVersion = 8D9A5C621EDA0F020006BB3E /* QSTodoDataModel.xcdatamodel */;
+			currentVersion = 8DF8BD1D1FB3726D00529EEF /* QSTodoDataModel.xcdatamodel */;
 			name = QSTodoDataModel.xcdatamodeld;
-			path = "../../../Downloads/woguraMobileApp-2/woguraMobileApp/QSTodoDataModel.xcdatamodeld";
+			path = ../QSTodoDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
