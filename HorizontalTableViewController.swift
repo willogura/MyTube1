@@ -25,6 +25,8 @@ class HorizontalTableViewController: UITableViewController {
     
     var currentPlaylistCount = 0
     
+    //end
+    
 
     func applicationDidReceiveMemoryWarning(application: UIApplication) {
         
