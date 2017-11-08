@@ -19,6 +19,9 @@ import CoreData
 
 
 
+var playlistIDs =  [String]()
+
+var playlistTitles =  [String]()
 
 
 class PlaylistIDViewController: UITableViewController, NSFetchedResultsControllerDelegate, PlaylistIDItemDelegate {
@@ -28,55 +31,37 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
     
     @IBOutlet weak var addButton: UIBarButtonItem!
     
-    
-    
     @IBOutlet weak var accountTitle: UINavigationItem!
     
     @IBOutlet weak var signInButton: UIBarButtonItem!
     
     lazy var fetchedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
         
-        
-        
-        
         let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "TodoItem")
+        
         let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!
         
-        
-        
-        
         fetchRequest.predicate = NSPredicate(format: "user == [c] %@", globalUsername)
-        // show only non-completed items
-    
-        // sort by item text
         
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
         
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
-        
-        // Note: if storing a lot of data, you should specify a cache for the last parameter
-        // for more information, see Apple's documentation: http://go.microsoft.com/fwlink/?LinkId=524591&clcid=0x409
         let resultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         
         resultsController.delegate = self;
         
-       
-        
         return resultsController
-            
-   
-        
         
     }()
     
     
-
-        
-        
+    
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         if(globalUsername != "Default") {
             
             
-            signInButton.title = "Sign-Out"
+            signInButton.title = "Sign Out"
             
             addButton.isEnabled = true
         } else {
@@ -85,32 +70,23 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
             
         }
         
-       
+        
     }
-        
-        
-        
-        
-    
-    
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
-        
-     
-        
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        
-        
-      
         let client = MSClient(applicationURLString: "https://woguramobileapp.azurewebsites.net")
+        
         let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).managedObjectContext!
+        
         self.store = MSCoreDataStore(managedObjectContext: managedObjectContext)
+        
         client.syncContext = MSSyncContext(delegate: nil, dataSource: self.store, callback: nil)
+        
         self.table = client.syncTable(withName: "TodoItem")
+        
         self.refreshControl?.addTarget(self, action: #selector(PlaylistIDViewController.onRefresh(_:)), for: UIControlEvents.valueChanged)
         
         var error : NSError? = nil
@@ -121,13 +97,13 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
             print("Unresolved error \(error), \(error?.userInfo)")
             abort()
         }
-
         
-     
+        
+        
         // Refresh data on load
         self.refreshControl?.beginRefreshing()
         self.onRefresh(self.refreshControl)
-            
+        
         
         
         
@@ -136,41 +112,28 @@ class PlaylistIDViewController: UITableViewController, NSFetchedResultsControlle
     
     func onRefresh(_ sender: UIRefreshControl!) {
         
-        
         print(globalUsername)
+        
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        
-        
-let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
-        
-        
+        let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
         
         fetchedResultController.fetchRequest.predicate = userCheckPredicate
         
         var error : NSError? = nil
+        
         do {
+            
             try self.fetchedResultController.performFetch()
             
-            
-            
- 
-            
-            
         } catch let error1 as NSError {
+            
             error = error1
+            
             print("Unresolved error \(error), \(error?.userInfo)")
+            
             abort()
         }
-        
-        
-        
-        
-        /*
-         self.table!.pull(with: self.table?.query(with: userCheckPredicate), queryId: "AllRecords")
- 
- */
-        
         
         self.table!.pull(with: self.table?.query(with: userCheckPredicate), queryId: "AllRecords") {
             (error) -> Void in
@@ -182,7 +145,7 @@ let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
                 // server conflicts, etc via the MSSyncContextDelegate
                 print("Error: \((error! as NSError).description)")
                 
-                // We will just discard our changes and keep the servers copy for simplicity                
+                // We will just discard our changes and keep the servers copy for simplicity
                 if let opErrors = (error! as NSError).userInfo[MSErrorPushResultKey] as? Array<MSTableOperationError> {
                     for opError in opErrors {
                         print("Attempted operation to item \(opError.itemId)")
@@ -197,13 +160,60 @@ let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
                 }
             }
             
-            
-            
-         
-            
-            
             self.refreshControl?.endRefreshing()
+            
+            
+            
+           self.getPlaylists()
+            
+            
+            
+        
+        
         }
+    }
+    
+    
+    func getPlaylists() {
+        
+        var results =   self.fetchedResultController.fetchedObjects
+        
+        var count = 0
+        
+        count = (results?.count)! - 1
+        
+       
+        
+        var playlists = [String]()
+        
+        var titles = [String]()
+        
+        while (count >= 0) {
+            
+            var item =  results?[count] as! NSManagedObject
+
+            
+            var id = item.value(forKey: "text") as! String
+    
+            playlists.append(id)
+   
+            var title = item.value(forKey: "title") as! String
+            
+              titles.append(title)
+            
+            count = count - 1
+            
+        }
+
+        if(count < 0) {
+            
+            
+            playlistIDs = playlists
+            
+            playlistTitles = titles
+     
+        }
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -230,14 +240,14 @@ let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     {
         
-    
+        
         
         let record = self.fetchedResultController.object(at: indexPath) as! NSManagedObject
         var item = self.store!.tableItem(from: record)
-       
+        
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-       
+        
         self.table!.delete(item) { (error) -> Void in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if error != nil {
@@ -262,7 +272,7 @@ let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let CellIdentifier = "Cell"
         
-        var cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier, for: indexPath) 
+        var cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier, for: indexPath)
         cell = configureCell(cell, indexPath: indexPath)
         
         return cell
@@ -273,7 +283,7 @@ let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
         
         // Set the label on the cell and make sure the label color is black (in case this cell
         // has been reused and was previously greyed out
-        if let text = item.value(forKey: "text") as? String {
+        if let text = item.value(forKey: "title") as? String {
             
             
             
@@ -307,17 +317,17 @@ let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
             
             
             if(globalUsername != "Default") {
-            let alert = UIAlertController(title: "You Have Been Signed-Out", message: "Please Sign-In again", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Okay", style: .destructive) { action in
-                // perhaps use action.title here
+                let alert = UIAlertController(title: "You Have Been Signed-Out", message: "Please Sign-In again", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: .destructive) { action in
+                    // perhaps use action.title here
                 })
-            
-            self.present(alert, animated: true)
+                
+                self.present(alert, animated: true)
                 
                 globalUsername = "Default"
                 
                 self.signInButton.title = "Sign-In"
-               
+                
                 self.refreshControl?.beginRefreshing()
                 self.onRefresh(self.refreshControl)
                 
@@ -337,14 +347,14 @@ let userCheckPredicate = NSPredicate(format: "user == [c] %@", globalUsername)
     // MARK: - ToDoItemDelegate
     
     
-    func didSaveItem(_ text: String)
+    func didSaveItem(text: String,  title: String)
     {
-        if text.isEmpty {
+        if (text.isEmpty || title.isEmpty) {
             return
         }
         
         // We set created at to now, so it will sort as we expect it to post the push/pull
-        let itemToInsert = ["text": text, "user": globalUsername, "complete": false, "__createdAt": Date()] as [String : Any]
+        let itemToInsert = ["text": text, "title": title, "user": globalUsername, "complete": false, "__createdAt": Date()] as [String : Any]
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.table!.insert(itemToInsert) {

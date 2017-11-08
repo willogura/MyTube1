@@ -52,6 +52,73 @@ class Updater {
     }
     
     
+    func createCategory() -> Category? {
+        
+        var category = home()
+        
+        var categoryOrderList = [CategoryOrder]()
+        
+        if((playlistIDs[safe: 0]) != nil){
+            
+            print("gets to first")
+            
+            category.featuredSectionPlaylist = playlistIDs[safe: 0]
+            
+            category.featuredSectionTitle = playlistTitles[safe:0]
+            
+            categoryOrderList.append(CategoryOrder.featured)
+            
+            category.categoryTitle = globalUsername
+            
+        }
+        
+        if((playlistIDs[safe: 1]) != nil){
+            
+            
+               print("gets to second")
+            category.featured2SectionPlaylist = playlistIDs[safe: 1]
+            
+            
+             category.featured2SectionTitle = playlistTitles[safe:1]
+            
+            categoryOrderList.append(CategoryOrder.featured2)
+            
+            
+        }
+        
+        if((playlistIDs[safe: 2]) != nil){
+            
+            category.featured3SectionPlaylist = playlistIDs[safe: 2]
+            
+            
+             category.featured3SectionTitle = playlistTitles[safe:2]
+            
+            categoryOrderList.append(CategoryOrder.featured3)
+            
+            
+        }
+        
+        category.categoryOrder = categoryOrderList
+        
+        
+        if(categoryOrderList.count > 0) {
+            
+            print("gets here too \(category.featuredSectionPlaylist)")
+            
+            var newCategory = Category(categoryFactory: CategoryFactory(factorySettings: category))
+            
+            
+       return newCategory
+        
+        
+        }
+        
+        return Category(categoryFactory: CategoryFactory(factorySettings: home()))
+        
+        
+    }
+    
+    
 
 
     

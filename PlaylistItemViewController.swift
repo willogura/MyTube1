@@ -18,12 +18,14 @@ import Foundation
 import UIKit
 
 protocol PlaylistIDItemDelegate {
-    func didSaveItem(_ text : String)
+    func didSaveItem(text : String, title: String)
 }
 
 class PlaylistIDItemViewController: UIViewController,  UIBarPositioningDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var text: UITextField!
+   
+    @IBOutlet weak var titleField: UITextField!
     
     var delegate : PlaylistIDItemDelegate?
     
@@ -32,24 +34,24 @@ class PlaylistIDItemViewController: UIViewController,  UIBarPositioningDelegate,
         super.viewDidLoad()
         
         self.text.delegate = self
-        self.text.becomeFirstResponder()
+        
     }
     
     @IBAction func cancelPressed(_ sender : UIBarButtonItem) {
-        self.text.resignFirstResponder()
+       
     }
     
     @IBAction func savePressed(_ sender : UIBarButtonItem) {
         saveItem()
-        self.text.resignFirstResponder()
+        
+         _ = self.navigationController?.popViewController(animated: true)
+        
+        
     }
     
     // Textfield
     
-    func textFieldDidEndEditing(_ textField: UITextField)
-    {
-        _ = self.navigationController?.popViewController(animated: true)
-    }
+   
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool
     {
@@ -58,9 +60,7 @@ class PlaylistIDItemViewController: UIViewController,  UIBarPositioningDelegate,
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
-        saveItem()
         
-        textField.resignFirstResponder()
         return true
     }
     
@@ -69,7 +69,13 @@ class PlaylistIDItemViewController: UIViewController,  UIBarPositioningDelegate,
     func saveItem()
     {
         if let text = self.text.text {
-            self.delegate?.didSaveItem(text)
+            
+            if let title = self.titleField.text {
+                
+          self.delegate?.didSaveItem(text: text, title: title)
+                
+            }
+            
         }
     }
 }

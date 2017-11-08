@@ -22,6 +22,9 @@ class HorizontalTableViewController: UITableViewController {
     var defaultDisplayCount = 15
     
     var sectionTitles = [String]()
+    
+    var currentPlaylistCount = 0
+    
 
     func applicationDidReceiveMemoryWarning(application: UIApplication) {
         
@@ -88,8 +91,9 @@ class HorizontalTableViewController: UITableViewController {
     
     public func updateTable() {
         
-        if(self.currentCategory?.categoryTitle != category.categoryTitle ) {
+        if(self.currentCategory?.categoryTitle != category.categoryTitle || currentPlaylistCount != playlistIDs.count ) {
             
+            print("UPDATE GETS CALLED AGAIN")
             
             if(category.categoryTitle == featuredCategory.categoryTitle && self.featuredVideos.count > 5 ) {
                 
@@ -103,6 +107,9 @@ class HorizontalTableViewController: UITableViewController {
                 self.changeTableSize()
                 
             } else  {
+                
+                currentPlaylistCount = 0
+                
                 
                 self.currentCategory = category
                 
@@ -203,8 +210,14 @@ class HorizontalTableViewController: UITableViewController {
                 
             }
             self.preloadThumbnails()
+            
+            
+            
+            
+            
+            
         }
-     
+     self.currentPlaylistCount = playlistIDs.count
         
         
     }
@@ -226,14 +239,21 @@ class HorizontalTableViewController: UITableViewController {
             
             var index = 0
             
+            print("REFRESH IS CALLED HERE")
+            
+            print(category.sections.count)
+            
             while (index < category.sections.count) {
                 
-                if(category.sections[index].searchID != nil) {
+               
                   
                         
                         if(category.sections[index].getDisplayCount() == nil) {
                             
                             self.videos.append(self.search.getYouTubeVideos(playlist: category.sections[index].sectionPlaylist!)!)
+                            
+                            
+                            print("GETS HERE")
                             
                         } else {
                             
@@ -242,17 +262,13 @@ class HorizontalTableViewController: UITableViewController {
                             let trimmedVids = self.search.trimVideos(videoArray: vids!, numberToReturn: category.sections[index].getDisplayCount()!)
                             
                             self.videos.append(trimmedVids)
-                            
+                             print("or GETS HERE")
                         }
                         
                     
                     
                     
-                } else {
-                    
-                    self.videos.append([nil])
-                    
-                }
+                
                 
                 index = index + 1
                 

@@ -31,6 +31,7 @@ class SuggestedVideosTableViewController: UITableViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+       
         
     }
     
@@ -48,6 +49,7 @@ class SuggestedVideosTableViewController: UITableViewController {
         
     }
     
+
     
     
     
@@ -58,23 +60,7 @@ class SuggestedVideosTableViewController: UITableViewController {
         
         
         
-            
-            if(self.section == nil) {
-                
-         
-                recommendedVideos =  search.getYouTubeVideos(playlist: (currentCategory?.sections[0].sectionPlaylist!)!)!
-                
-                recommendedVideos = search.trimVideos(videoArray: recommendedVideos, numberToReturn: 10)
-                
-            } else {
-                
-          
-                
-                recommendedVideos =  search.getYouTubeVideos(playlist: category.sections[self.section!].sectionPlaylist!)!
-                
-                recommendedVideos = search.trimVideos(videoArray: recommendedVideos, numberToReturn: 10)
-                
-            }
+     
             
         
         myVideos = recommendedVideos

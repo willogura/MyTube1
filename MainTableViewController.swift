@@ -51,14 +51,27 @@ class MainTableViewController: UITableViewController {
     func refresh(sender:AnyObject) {
         
         print("refresh called")
+        
         DispatchQueue.global(qos: .background).async {
             
             DispatchQueue.main.async( execute: {
+
+                var newCategory = updater.createCategory()
                 
+                if(newCategory != nil) {
+                    
+                    print("loads new category")
+                    
+                   self.parentCategory = newCategory!
+                    
+                     category = self.parentCategory
+                    
+                    category.createListing()
+  
+                }
+   
                 self.embeddedViewController?.refreshTable()
-                
-    
-                
+
             })
             
             self.refreshControl?.endRefreshing()
@@ -134,6 +147,21 @@ class MainTableViewController: UITableViewController {
      UIApplication.shared.isStatusBarHidden = false
         
         
+        var newCategory = updater.createCategory()
+        
+        if(newCategory != nil) {
+            
+            print("loads new category")
+            
+            self.parentCategory = newCategory!
+            
+            category = self.parentCategory
+            
+            
+            
+            
+            
+        }
         category = self.parentCategory
         
         self.title = self.parentCategory.categoryTitle
